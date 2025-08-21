@@ -70,6 +70,9 @@ module.exports = {
           '2xl': '1536px',
         },
       },
+      maxWidth: {
+        'hero': '1536px',
+      },
     }
   },
   plugins: [require("tailwindcss-animate")],

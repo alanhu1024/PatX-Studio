@@ -28,15 +28,15 @@ export default function Home() {
         {/* Floating orbs decoration */}
         <div className="absolute top-20 left-10 w-72 h-72 bg-primary/20 rounded-full blur-3xl animate-pulse" />
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl animate-pulse" />
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
+        <div className="w-full max-w-hero mx-auto px-4 sm:px-6 lg:px-8 relative" style={{maxWidth: '1480px'}}>
           <div className="grid md:grid-cols-2 gap-8 lg:gap-12 items-center">
             {/* Left side - Text content */}
             <div className="">
               <h1 className="text-5xl sm:text-6xl font-bold mb-6">
-               Faster, Affordable AI Patent Claim Charts
+               Faster, More Reliable, and More Cost-Effective AI Patent Claim Charts
               </h1>
               <p className="text-xl text-muted-foreground mb-2">
-                Cut claim chart drafting from 3 hours to 20–30 minutes <span className="text-primary">with audit-ready and export-ready</span>.
+                Cut claim chart drafting from 3 hours to 20–30 minutes <span className="text-primary">with audit-ready evidence and export-ready charts</span>.
               </p>
               {/* <p className="text-xl text-muted-foreground mb-8">
               with auditable evidence trails and export-ready outputs.
