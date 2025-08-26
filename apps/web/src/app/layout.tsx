@@ -27,7 +27,19 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`}>
       <head>
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+              @keyframes marquee-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+              .marquee { position: relative; overflow: hidden; mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); }
+              .marquee__track { display: flex; align-items: center; gap: 3rem; width: max-content; padding-inline: 1rem; animation: marquee-scroll 30s linear infinite; }
+              .marquee:hover .marquee__track { animation-play-state: paused; }
+              @media (prefers-reduced-motion: reduce) { .marquee__track { animation: none; } }
+            `,
+          }}
+        />
         <Script
+          strategy="afterInteractive"
           crossOrigin="anonymous"
           src="//unpkg.com/same-runtime/dist/index.global.js"
         />

@@ -23,121 +23,272 @@ export default function Home() {
       <Navbar />
 
       {/* Hero Section */}
-      <section className="relative -mt-16 pt-32 pb-32 overflow-hidden">
+      <section className="relative pt-32 pb-48 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent" />
         {/* Floating orbs decoration */}
         <div className="absolute top-20 left-10 w-72 h-72 bg-primary/20 rounded-full blur-3xl animate-pulse" />
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl animate-pulse" />
         <div className="w-full max-w-hero mx-auto px-4 sm:px-6 lg:px-8 relative" style={{maxWidth: '1480px'}}>
-          <div className="grid md:grid-cols-2 gap-8 lg:gap-12 items-center">
+          <div className="grid md:grid-cols-2 gap-8 lg:gap-12 items-center" style={{ margin: "0 20px" }}>
             {/* Left side - Text content */}
-            <div className="">
-              <h1 className="text-5xl sm:text-6xl font-bold mb-6">
-               Faster, More Reliable, and More Cost-Effective AI Patent Claim Charts
+            <div>
+              <h1 style={{lineHeight: 1.2}} className="text-4xl sm:text-5xl md:text-6xl font-bold mb-2">
+               Faster, More Reliable, <br/>and More Cost-Effective <br/>AI Patent Claim Charts
               </h1>
               <p className="text-xl text-muted-foreground mb-2">
-                Cut claim chart drafting from 3 hours to 20–30 minutes <span className="text-primary">with audit-ready evidence and export-ready charts</span>.
+                Cut claim chart drafting time from 3 hours to 20–30 minutes <span className="text-primary">with audit-ready evidence and export-ready charts</span>.
               </p>
-              {/* <p className="text-xl text-muted-foreground mb-8">
-              with auditable evidence trails and export-ready outputs.
-              </p> */}
             </div>
 
-            {/* Right side - Dashboard Mockup */}
+            {/* Right side - App Mockup */}
             <div className="relative max-w-none">
-              <div className="bg-white rounded-xl shadow-2xl border overflow-hidden">
-              <div className="flex items-center gap-2 p-4 border-b">
-                <div className="w-3 h-3 rounded-full bg-red-500" />
-                <div className="w-3 h-3 rounded-full bg-yellow-500" />
-                <div className="w-3 h-3 rounded-full bg-green-500" />
-                <span className="ml-4 text-sm text-muted-foreground">Smoothie Inc.</span>
-              </div>
-              <div className="p-8">
-                <div className="grid grid-cols-12 gap-6">
-                  <div className="col-span-3">
-                    <div className="space-y-4">
-                      <div className="text-xs font-medium text-muted-foreground">Recently viewed</div>
-                      <div className="space-y-2">
-                        <div className="p-2 hover:bg-muted rounded cursor-pointer text-sm">Private canvases</div>
-                        <div className="p-2 hover:bg-muted rounded cursor-pointer text-sm">Data library</div>
-                        <div className="p-2 hover:bg-muted rounded cursor-pointer text-sm">Settings & members</div>
+              <style dangerouslySetInnerHTML={{ __html: `
+        .claim-chart-container * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        .claim-chart-container {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+        
+        .claim-chart-container .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        /* Header */
+        .claim-chart-container .header {
+            padding: 15px 30px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .claim-chart-container .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .claim-chart-container .window-controls {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .claim-chart-container .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        .claim-chart-container .dot.red { background: #ff5f57; }
+        .claim-chart-container .dot.yellow { background: #ffbd2e; }
+        .claim-chart-container .dot.green { background: #28ca42; }
+        
+        .claim-chart-container .company-name {
+            font-size: 18px;
+            color: #6b7280;
+            font-weight: 400;
+        }
+        
+        /* Main Content */
+        .claim-chart-container .main-content {
+            display: flex;
+        }
+        
+        /* Sidebar */
+        .claim-chart-container .sidebar {
+            flex: 1;
+            min-width: 150px;
+            background: #f9fafb;
+            border-right: 1px solid #e5e7eb;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .claim-chart-container .sidebar-content {
+            flex: 1;
+        }
+        
+        .claim-chart-container .sidebar-section {
+            margin-bottom: 25px;
+        }
+        
+        .claim-chart-container .sidebar-title {
+            font-size: clamp(12px, 1.4vw, 15px);
+            color: #374151;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+        
+        .claim-chart-container .sidebar-item {
+            background: #e5e7eb;
+            height: 32px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+        
+        .claim-chart-container .sidebar-item.active {
+            background: #93c5fd;
+            box-shadow: 0 2px 4px rgba(147, 197, 253, 0.2);
+        }
+        
+        .claim-chart-container .start-button {
+            background: white;
+            border: 1px solid #93c5fd;
+            color: #60a5fa;
+            padding: 10px 32px;
+            border-radius: 8px;
+            font-size: clamp(11px, 1.2vw, 13px);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+        }
+        
+        .claim-chart-container .start-button:hover {
+            background: #60a5fa;
+            color: white;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(96, 165, 250, 0.3);
+        }
+        
+        /* Chart Area */
+        .claim-chart-container .chart-area {
+            flex: 3;
+            min-width: 300px;
+            padding: 20px 30px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .claim-chart-container .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .claim-chart-container .chart-title {
+            font-size: clamp(20px, 2.5vw, 28px);
+            font-weight: 600;
+            color: #1f2937;
+        }
+        
+        .claim-chart-container .export-button {
+            background: white;
+            border: 1px solid #93c5fd;
+            color: #60a5fa;
+            padding: 8px 24px;
+            border-radius: 8px;
+            font-size: clamp(12px, 1.3vw, 14px);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .claim-chart-container .export-button:hover {
+            background: #eff6ff;
+            transform: translateY(-1px);
+        }
+        
+        /* Chart Grid */
+        .claim-chart-container .chart-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .claim-chart-container .chart-column {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .claim-chart-container .chart-item {
+            background: #e5e7eb;
+            height: 32px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        
+        .claim-chart-container .chart-item:hover {
+            background: #d1d5db;
+        }
+        
+        .claim-chart-container .chart-item.highlight {
+            background: #e0f2fe;
+            border: 1px solid #bae6fd;
+        }
+        
+    `}} />
+              <div className="claim-chart-container">
+                <div className="container">
+                  <div className="header">
+                    <div className="header-left">
+                      <div className="window-controls">
+                        <div className="dot red"></div>
+                        <div className="dot yellow"></div>
+                        <div className="dot green"></div>
                       </div>
-                      <div className="text-xs font-medium text-muted-foreground mt-6">Smoothie</div>
-                      <div className="space-y-2">
-                        <div className="p-2 hover:bg-muted rounded cursor-pointer text-sm flex items-center gap-2">
-                          <div className="w-1 h-1 rounded-full bg-blue-500" />
-                          Finance
-                        </div>
-                        <div className="p-2 hover:bg-muted rounded cursor-pointer text-sm flex items-center gap-2 ml-4">
-                          Growth
-                        </div>
-                        <div className="p-2 hover:bg-muted rounded cursor-pointer text-sm flex items-center gap-2 ml-4">
-                          Runway
-                        </div>
-                        <div className="p-2 hover:bg-muted rounded cursor-pointer text-sm flex items-center gap-2">
-                          <div className="w-1 h-1 rounded-full bg-green-500" />
-                          Product
-                        </div>
-                      </div>
+                      <div className="company-name">AIGROW Inc.</div>
                     </div>
                   </div>
-                  <div className="col-span-9">
-                    <div className="flex items-center justify-between mb-6">
-                      <h3 className="text-lg font-semibold">Top customers</h3>
-                      <div className="flex items-center gap-2">
-                        <button className="px-3 py-1 bg-primary text-primary-foreground rounded text-sm">
-                          New chart
-                        </button>
+
+                  <div className="main-content">
+                    <div className="sidebar">
+                      <div className="sidebar-content">
+                        <div className="sidebar-section">
+                          <div className="sidebar-title">Subject patent</div>
+                          <div className="sidebar-item active"></div>
+                        </div>
+
+                        <div className="sidebar-section">
+                          <div className="sidebar-title">Prior art references</div>
+                          <div className="sidebar-item"></div>
+                          <div className="sidebar-item"></div>
+                        </div>
                       </div>
+
+                      <button className="start-button">Start</button>
                     </div>
-                    <div className="bg-muted/30 rounded-lg p-6">
-                      <div className="grid grid-cols-4 gap-4 mb-6">
-                        <div className="space-y-2">
-                          <div className="text-2xl font-bold">$75M</div>
-                          <div className="text-xs text-muted-foreground">Q1 Revenue</div>
-                        </div>
-                        <div className="space-y-2">
-                          <div className="text-2xl font-bold">$92M</div>
-                          <div className="text-xs text-muted-foreground">Q2 Revenue</div>
-                        </div>
-                        <div className="space-y-2">
-                          <div className="text-2xl font-bold">$84M</div>
-                          <div className="text-xs text-muted-foreground">Q3 Revenue</div>
-                        </div>
-                        <div className="space-y-2">
-                          <div className="text-2xl font-bold">$95M</div>
-                          <div className="text-xs text-muted-foreground">Q4 Revenue</div>
-                        </div>
+
+                    <div className="chart-area">
+                      <div className="chart-header">
+                        <h1 className="chart-title">Claim Chart</h1>
+                        <button className="export-button">Export</button>
                       </div>
-                      <div className="h-48 bg-white rounded-lg shadow-inner p-4">
-                        <div className="flex items-end justify-between h-full">
-                          {[40, 60, 45, 70, 55, 65, 50, 75, 62, 58, 68, 72].map((height, index) => (
-                            <div
-                              key={index}
-                              className="flex-1 mx-0.5 bg-gradient-to-t from-blue-500 to-cyan-400 rounded-t hover:from-blue-600 hover:to-cyan-500 transition-all duration-300 cursor-pointer"
-                              style={{ height: `${height}%` }}
-                            />
-                          ))}
+
+                      <div className="chart-grid">
+                        <div className="chart-column">
+                          <div className="chart-item highlight"></div>
+                          <div className="chart-item"></div>
+                          <div className="chart-item"></div>
+                          <div className="chart-item"></div>
                         </div>
-                        <div className="flex justify-between mt-2 text-xs text-muted-foreground">
-                          <span>Jan</span>
-                          <span>Feb</span>
-                          <span>Mar</span>
-                          <span>Apr</span>
-                          <span>May</span>
-                          <span>Jun</span>
-                          <span>Jul</span>
-                          <span>Aug</span>
-                          <span>Sep</span>
-                          <span>Oct</span>
-                          <span>Nov</span>
-                          <span>Dec</span>
+                        <div className="chart-column">
+                          <div className="chart-item"></div>
+                          <div className="chart-item"></div>
+                          <div className="chart-item"></div>
+                          <div className="chart-item"></div>
+                          <div className="chart-item"></div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
               </div>
             </div>
           </div>
@@ -145,19 +296,30 @@ export default function Home() {
       </section>
 
       {/* Logo Cloud */}
-      <section className="py-16 border-y">
+      <section className="py-24 mt-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-center text-sm text-muted-foreground mb-8">
-            Helping these rocketship companies grow even faster
+          <p className="text-center text-lg sm:text-xl text-muted-foreground mb-12">
+            Trusted by famous brands
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-6">
-            <img src="https://ext.same-assets.com/1133407503/1955674907.svg" alt="Anvil" className="h-8 opacity-60 hover:opacity-100 transition-opacity" />
-            <img src="https://ext.same-assets.com/1133407503/2075191122.svg" alt="Doppler" className="h-8 opacity-60 hover:opacity-100 transition-opacity" />
-            <img src="https://ext.same-assets.com/1133407503/1432361546.svg" alt="Earth" className="h-8 opacity-60 hover:opacity-100 transition-opacity" />
-            <img src="https://ext.same-assets.com/1133407503/3668445894.svg" alt="Novel" className="h-8 opacity-60 hover:opacity-100 transition-opacity" />
-            <img src="https://ext.same-assets.com/1133407503/566171222.svg" alt="Slatewell" className="h-8 opacity-60 hover:opacity-100 transition-opacity" />
-            <img src="https://ext.same-assets.com/1133407503/1578610569.svg" alt="Solace Health" className="h-8 opacity-60 hover:opacity-100 transition-opacity" />
-            <img src="https://ext.same-assets.com/1133407503/2566791555.svg" alt="Wagtopia" className="h-8 opacity-60 hover:opacity-100 transition-opacity" />
+          <div className="marquee" aria-label="Trusted brands carousel">
+            <div className="marquee__track">
+              <img src="https://ext.same-assets.com/1133407503/1955674907.svg" alt="Anvil" className="h-8 opacity-60 hover:opacity-100 transition-opacity" />
+              <img src="https://ext.same-assets.com/1133407503/2075191122.svg" alt="Doppler" className="h-8 opacity-60 hover:opacity-100 transition-opacity" />
+              <img src="https://ext.same-assets.com/1133407503/1432361546.svg" alt="Earth" className="h-8 opacity-60 hover:opacity-100 transition-opacity" />
+              <img src="https://ext.same-assets.com/1133407503/3668445894.svg" alt="Novel" className="h-8 opacity-60 hover:opacity-100 transition-opacity" />
+              <img src="https://ext.same-assets.com/1133407503/566171222.svg" alt="Slatewell" className="h-8 opacity-60 hover:opacity-100 transition-opacity" />
+              <img src="https://ext.same-assets.com/1133407503/1578610569.svg" alt="Solace Health" className="h-8 opacity-60 hover:opacity-100 transition-opacity" />
+              <img src="https://ext.same-assets.com/1133407503/2566791555.svg" alt="Wagtopia" className="h-8 opacity-60 hover:opacity-100 transition-opacity" />
+
+              {/* duplicate for seamless loop */}
+              <img src="https://ext.same-assets.com/1133407503/1955674907.svg" alt="Anvil" className="h-8 opacity-60 hover:opacity-100 transition-opacity" aria-hidden="true" />
+              <img src="https://ext.same-assets.com/1133407503/2075191122.svg" alt="Doppler" className="h-8 opacity-60 hover:opacity-100 transition-opacity" aria-hidden="true" />
+              <img src="https://ext.same-assets.com/1133407503/1432361546.svg" alt="Earth" className="h-8 opacity-60 hover:opacity-100 transition-opacity" aria-hidden="true" />
+              <img src="https://ext.same-assets.com/1133407503/3668445894.svg" alt="Novel" className="h-8 opacity-60 hover:opacity-100 transition-opacity" aria-hidden="true" />
+              <img src="https://ext.same-assets.com/1133407503/566171222.svg" alt="Slatewell" className="h-8 opacity-60 hover:opacity-100 transition-opacity" aria-hidden="true" />
+              <img src="https://ext.same-assets.com/1133407503/1578610569.svg" alt="Solace Health" className="h-8 opacity-60 hover:opacity-100 transition-opacity" aria-hidden="true" />
+              <img src="https://ext.same-assets.com/1133407503/2566791555.svg" alt="Wagtopia" className="h-8 opacity-60 hover:opacity-100 transition-opacity" aria-hidden="true" />
+            </div>
           </div>
         </div>
       </section>
@@ -449,3 +611,5 @@ export default function Home() {
     </div>
   );
 }
+
+
