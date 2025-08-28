@@ -32,6 +32,9 @@
   body {
     @apply bg-background text-foreground;
   }
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 @layer components {
@@ -41,6 +44,18 @@
   
   .gradient-bg {
     @apply bg-gradient-to-br from-primary via-purple-500 to-blue-500;
+  }
+
+  /* Subtle vertical edge fade mask for frosted headers */
+  .mask-fade-y-edges {
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,1) 22%, rgba(0,0,0,1) 78%, rgba(0,0,0,0));
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,1) 22%, rgba(0,0,0,1) 78%, rgba(0,0,0,0));
+  }
+
+  /* Only soften the bottom edge (gentle 15% fade) */
+  .mask-fade-bottom-soft {
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 92%, rgba(0,0,0,0) 100%);
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 92%, rgba(0,0,0,0) 100%);
   }
 }
 

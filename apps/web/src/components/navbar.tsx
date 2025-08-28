@@ -8,14 +8,10 @@ export function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      // 滚动超过 10px 时显示背景
       setIsScrolled(window.scrollY > 10);
     };
 
-    // 初始检查
     handleScroll();
-
-    // 添加滚动监听
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -23,48 +19,53 @@ export function Navbar() {
   return (
     <nav
       className={`
-        sticky top-0 z-50 transition-all duration-500 ease-out
+        fixed top-0 w-full z-50 transition-all duration-300 ease-out
         ${isScrolled
-          ? 'bg-white/70 dark:bg-black/70 backdrop-blur-xl backdrop-saturate-150 border-b border-white/20 dark:border-white/10 shadow-lg shadow-black/5 before:absolute before:inset-0 before:bg-gradient-to-r before:from-white/10 before:to-white/5 before:pointer-events-none'
-          : 'bg-transparent border-b-transparent'
+          ? 'bg-background/20 backdrop-blur-2xl saturate-150 contrast-90'
+          : 'bg-transparent'
         }
       `}
-      style={{
-        WebkitBackdropFilter: isScrolled ? 'blur(20px) saturate(180%)' : 'none',
-        backdropFilter: isScrolled ? 'blur(20px) saturate(180%)' : 'none',
-      }}
     >
-      <div className="px-4 sm:px-6 lg:px-8 relative">
-        <div className="flex items-center justify-between h-16">
+      {/* intensified frosted layer with vertical edge fade when scrolled */}
+      {isScrolled && (
+        <>
+          {/* stronger blur strip that respects content via backdrop */}
+          <div className="pointer-events-none absolute inset-0 backdrop-blur-2xl saturate-150 contrast-90" />
+          {/* soften only the bottom edge so it blends with content */}
+          <div className="pointer-events-none absolute inset-0 mask-fade-bottom-soft" />
+        </>
+      )}
+      <div className="px-6 lg:px-8 relative">
+        <div className="flex items-center justify-between h-14">
           <div className="flex items-center gap-8">
-            <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity border-0 outline-none focus:outline-none">
+            <Link href="#home" className="flex items-center gap-2 hover:opacity-80 transition-opacity border-0 outline-none focus:outline-none">
               <div className="w-6 h-6 bg-primary rounded border-0" />
               <span className="font-bold text-xl">PatX</span>
             </Link>
             <div className="hidden md:flex items-center gap-6">
               <Link
-                href="/Product"
+                href="#home"
                 className="text-sm font-medium text-muted-foreground hover:text-foreground transition-all duration-200 hover:scale-105 relative group"
               >
-                Product
+                Home
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-current transition-all duration-300 group-hover:w-full opacity-0 group-hover:opacity-100"></span>
               </Link>
               <Link
-                href="/Features"
+                href="#features"
                 className="text-sm font-medium text-muted-foreground hover:text-foreground transition-all duration-200 hover:scale-105 relative group"
               >
-                Features
+                Feature
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-current transition-all duration-300 group-hover:w-full opacity-0 group-hover:opacity-100"></span>
               </Link>
               <Link
-                href="/docs"
+                href="#testimonials"
                 className="text-sm font-medium text-muted-foreground hover:text-foreground transition-all duration-200 hover:scale-105 relative group"
               >
-                Docs
+                Testimonials
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-current transition-all duration-300 group-hover:w-full opacity-0 group-hover:opacity-100"></span>
               </Link>
               <Link
-                href="/pricing"
+                href="#pricing"
                 className="text-sm font-medium text-muted-foreground hover:text-foreground transition-all duration-200 hover:scale-105 relative group"
               >
                 Pricing

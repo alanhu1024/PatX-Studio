@@ -5,3 +5,6 @@ export { FeatureSection } from './FeatureSection';
 export * from './icons';
 export { Avatar } from './ui/avatar';
 export { Badge } from './ui/badge';
+export { TestimonialsSection } from './TestimonialsSection';
+export { CTASection } from './CTASection';
+export { default as PricingSection } from './PricingSection';

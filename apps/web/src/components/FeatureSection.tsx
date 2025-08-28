@@ -2,14 +2,14 @@ import React from "react";
 
 export const FeatureSection: React.FC = () => {
   return (
-    <section className="py-16 md:py-20 lg:py-24 bg-gradient-to-b from-transparent to-primary/5 relative overflow-hidden">
+    <section id="features" className="pt-10 md:pt-12 lg:pt-16 pb-16 md:pb-20 lg:pb-24 bg-gradient-to-b from-transparent to-primary/5 relative overflow-hidden scroll-mt-30">
       {/* Floating orbs decoration */}
       <div className="absolute top-32 right-20 w-64 h-64 bg-primary/10 rounded-full blur-3xl animate-pulse" />
       <div className="absolute bottom-32 left-20 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl animate-pulse" />
       
       <div className="w-full max-w-hero mx-auto px-4 sm:px-6 lg:px-8 relative" style={{maxWidth: '1480px'}}>
         {/* Top spacing for first feature */}
-        <div className="h-16 md:h-24 lg:h-32"></div>
+        <div className="h-12 md:h-16 lg:h-20"></div>
         
         {/* Feature 1 - Left Image, Right Text */}
         <div className="grid md:grid-cols-2 gap-16 lg:gap-20 items-center mb-60 md:mb-80 lg:mb-96" style={{ margin: "0 20px" }}>
@@ -164,22 +164,10 @@ export const FeatureSection: React.FC = () => {
                 <span className="font-medium">Export Center</span>
               </div>
               <div className="space-y-6">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-center">
-                    <div className="text-lg mb-1">📄</div>
-                    <div className="text-xs font-medium text-red-700">PDF</div>
-                  </div>
-                  <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg text-center">
-                    <div className="text-lg mb-1">📝</div>
-                    <div className="text-xs font-medium text-blue-700">Word</div>
-                  </div>
+                <div className="grid grid-cols-1 gap-4">
                   <div className="p-4 bg-green-50 border border-green-200 rounded-lg text-center">
                     <div className="text-lg mb-1">📊</div>
                     <div className="text-xs font-medium text-green-700">Excel</div>
-                  </div>
-                  <div className="p-4 bg-purple-50 border border-purple-200 rounded-lg text-center">
-                    <div className="text-lg mb-1">🌐</div>
-                    <div className="text-xs font-medium text-purple-700">HTML</div>
                   </div>
                 </div>
                 <div className="border-2 border-dashed border-primary/30 rounded-lg p-5 text-center">
