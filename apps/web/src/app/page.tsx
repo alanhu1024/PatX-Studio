@@ -337,7 +337,7 @@ export default function Home() {
           {/* Feature 1 - Left Image, Right Text */}
           <div className="grid md:grid-cols-2 gap-16 lg:gap-20 items-center mb-60 md:mb-80 lg:mb-96" style={{ margin: "0 20px" }}>
             {/* Left: PatX AI Engine Processing UI */}
-            <div className="relative order-1">
+            <div className="relative order-1 md:order-1">
               <div className="bg-white rounded-2xl shadow-xl p-10 border border-gray-100">
                 <div className="flex items-center gap-3 mb-8">
                   <div className="w-3 h-3 bg-red-500 rounded-full"></div>
@@ -374,7 +374,7 @@ export default function Home() {
             </div>
             
             {/* Right: Text Content */}
-            <div className="order-2">
+            <div className="order-2 md:order-2">
               <h2 className="text-3xl sm:text-4xl font-bold mb-8 text-balance">⚡ Beat Deadlines, Not Paperwork</h2>
               <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
                 Go from patent to polished chart in minutes. Our AI handles the heavy lifting so you can focus on strategy, not paperwork.
@@ -408,7 +408,7 @@ export default function Home() {
           {/* Feature 2 - Right Image, Left Text */}
           <div className="grid md:grid-cols-2 gap-16 lg:gap-20 items-center mb-60 md:mb-80 lg:mb-96" style={{ margin: "0 20px" }}>
             {/* Left: Text Content */}
-            <div className="order-1">
+            <div className="order-2 md:order-1">
               <h2 className="text-3xl sm:text-4xl font-bold mb-8 text-balance">📑 Verifiable Evidence, Fully Traceable</h2>
               <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
                 Every mapping is backed by verifiable citations and source tracking. Build airtight arguments with confidence that every line can stand up in court.
@@ -436,7 +436,7 @@ export default function Home() {
             </div>
             
             {/* Right: Evidence Tracker UI */}
-            <div className="order-2 relative">
+            <div className="order-1 md:order-2 relative">
               <div className="bg-white rounded-2xl shadow-xl p-10 border border-gray-100">
                 <div className="flex items-center justify-between mb-8">
                   <h3 className="text-lg font-semibold flex items-center gap-2">📑 Evidence Tracker</h3>
@@ -480,7 +480,7 @@ export default function Home() {
           {/* Feature 3 - Left Image, Right Text */}
           <div className="grid md:grid-cols-2 gap-16 lg:gap-20 items-center mb-60 md:mb-80 lg:mb-96" style={{ margin: "0 20px" }}>
             {/* Left: Export Center UI */}
-            <div className="relative order-1">
+            <div className="relative order-1 md:order-1">
               <div className="bg-white rounded-2xl shadow-xl p-10 border border-gray-100">
                 <div className="flex items-center gap-3 mb-8">
                   <div className="text-lg">📤</div>
@@ -524,7 +524,7 @@ export default function Home() {
             </div>
             
             {/* Right: Text Content */}
-            <div className="order-2">
+            <div className="order-2 md:order-2">
               <h2 className="text-3xl sm:text-4xl font-bold mb-8 text-balance">📤 Court-Ready Exports, Instantly</h2>
               <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
                 Deliver charts that look like they were prepared by a top firm — only faster.
