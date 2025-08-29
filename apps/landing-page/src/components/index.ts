@@ -8,3 +8,10 @@ export { Badge } from './ui/badge';
 export { TestimonialsSection } from './TestimonialsSection';
 export { CTASection } from './CTASection';
 export { default as PricingSection } from './PricingSection';
+export { default as Footer } from './Footer';
+
+// Talk to Sales components
+export { default as TalkToSalesForm } from './TalkToSalesForm';
+export { default as TalkToSalesModal } from './TalkToSalesModal';
+export { default as TalkToSalesPage } from './TalkToSalesPage';
+export { default as TalkToSalesTrigger } from './TalkToSalesTrigger';

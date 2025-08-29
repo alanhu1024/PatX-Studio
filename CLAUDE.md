@@ -8,8 +8,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **Start development server**: `pnpm dev` (runs all frontend apps in parallel via Turbo)
 - **Build**: `pnpm build`
 - **Lint**: `pnpm lint`
-- **Type check (web app)**: `cd apps/web && bunx tsc --noEmit`
-- **Format code (web app)**: `cd apps/web && bunx biome format --write`
+- **Type check (landing page)**: `cd apps/landing-page && bunx tsc --noEmit`
+- **Format code (landing page)**: `cd apps/landing-page && bunx biome format --write`
 - **Run tests**: `pnpm test`
 
 ### Backend Development
@@ -30,8 +30,8 @@ This is a monorepo project using:
 ### Repository Structure
 
 - **apps/**
-  - `web/`: Next.js 13+ marketing/landing site with static export, uses shadcn/ui components and Tailwind CSS
-  - `app/`: Main application (structure exists but no package.json present)
+  - `landing-page/`: Next.js 13+ marketing/landing site with static export, uses shadcn/ui components and Tailwind CSS
+  - `application/`: Main application (structure exists but no package.json present)
   
 - **services/**: Python microservices (FastAPI-based)
   - auth, billing, claim_chart, documents, gateway, search, worker
@@ -52,7 +52,7 @@ This is a monorepo project using:
 
 ## Key Configuration
 
-- **Next.js web app**: 
+- **Next.js landing page**: 
   - Static export mode (`output: 'export'`)
   - TypeScript strict mode enabled
   - Uses `@/*` path alias for `./src/*`

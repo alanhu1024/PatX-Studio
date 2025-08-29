@@ -2,9 +2,11 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -15,6 +17,9 @@ export function Navbar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // 判断是否在主页
+  const isHomePage = pathname === "/";
 
   return (
     <nav
@@ -38,34 +43,37 @@ export function Navbar() {
       <div className="px-6 lg:px-8 relative">
         <div className="flex items-center justify-between h-14">
           <div className="flex items-center gap-8">
-            <Link href="#home" className="flex items-center gap-2 hover:opacity-80 transition-opacity border-0 outline-none focus:outline-none">
+            <Link 
+              href={isHomePage ? "#home" : "/"} 
+              className="flex items-center gap-2 hover:opacity-80 transition-opacity border-0 outline-none focus:outline-none"
+            >
               <div className="w-6 h-6 bg-primary rounded border-0" />
               <span className="font-bold text-xl">PatX</span>
             </Link>
             <div className="hidden md:flex items-center gap-6">
               <Link
-                href="#home"
+                href={isHomePage ? "#home" : "/"}
                 className="text-sm font-medium text-muted-foreground hover:text-foreground transition-all duration-200 hover:scale-105 relative group"
               >
                 Home
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-current transition-all duration-300 group-hover:w-full opacity-0 group-hover:opacity-100"></span>
               </Link>
               <Link
-                href="#features"
+                href={isHomePage ? "#features" : "/#features"}
                 className="text-sm font-medium text-muted-foreground hover:text-foreground transition-all duration-200 hover:scale-105 relative group"
               >
                 Feature
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-current transition-all duration-300 group-hover:w-full opacity-0 group-hover:opacity-100"></span>
               </Link>
               <Link
-                href="#testimonials"
+                href={isHomePage ? "#testimonials" : "/#testimonials"}
                 className="text-sm font-medium text-muted-foreground hover:text-foreground transition-all duration-200 hover:scale-105 relative group"
               >
                 Testimonials
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-current transition-all duration-300 group-hover:w-full opacity-0 group-hover:opacity-100"></span>
               </Link>
               <Link
-                href="#pricing"
+                href={isHomePage ? "#pricing" : "/#pricing"}
                 className="text-sm font-medium text-muted-foreground hover:text-foreground transition-all duration-200 hover:scale-105 relative group"
               >
                 Pricing

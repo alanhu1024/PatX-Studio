@@ -1,8 +1,10 @@
 import React from "react";
+import TalkToSalesTrigger from "./TalkToSalesTrigger";
 
 export const FeatureSection: React.FC = () => {
   return (
-    <section id="features" className="pt-10 md:pt-12 lg:pt-16 pb-16 md:pb-20 lg:pb-24 bg-gradient-to-b from-transparent to-primary/5 relative overflow-hidden scroll-mt-30">
+    <section id="features" className="pt-10 md:pt-12 lg:pt-16 pb-16 md:pb-20 lg:pb-24 bg-gradient-to-b from-transparent to-primary/5 relative over
+    flow-hidden scroll-mt-30">
       {/* Floating orbs decoration */}
       <div className="absolute top-32 right-20 w-64 h-64 bg-primary/10 rounded-full blur-3xl animate-pulse" />
       <div className="absolute bottom-32 left-20 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl animate-pulse" />
@@ -214,6 +216,31 @@ export const FeatureSection: React.FC = () => {
                 </span>
               </li>
             </ul>
+          </div>
+        </div>
+        
+        {/* CTA Section */}
+        <div className="text-center py-16 md:py-20">
+          <h2 className="text-3xl sm:text-4xl font-bold mb-6 text-balance">
+            Ready to start with AI patent analysis?
+          </h2>
+          <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+            See how AI can cut your patent drafting time from 3 hours to 20 minutes
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <TalkToSalesTrigger 
+              variant="default" 
+              size="lg"
+              className="px-8 py-3"
+            >
+              Schedule Demo
+            </TalkToSalesTrigger>
+            <a 
+              href="/talk-to-sales" 
+              className="inline-flex items-center justify-center px-8 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+            >
+              Learn More
+            </a>
           </div>
         </div>
       </div>
