@@ -23,6 +23,21 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: false,
   },
+
+  // 静态资源优化
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'X-DNS-Prefetch-Control',
+            value: 'on'
+          }
+        ],
+      },
+    ]
+  },
 };
 
 module.exports = nextConfig;
