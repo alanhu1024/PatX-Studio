@@ -1,5 +1,4 @@
 import React from "react";
-import TalkToSalesTrigger from "./TalkToSalesTrigger";
 
 export const FeatureSection: React.FC = () => {
   return (
@@ -219,30 +218,7 @@ export const FeatureSection: React.FC = () => {
           </div>
         </div>
         
-        {/* CTA Section */}
-        <div className="text-center py-16 md:py-20">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-6 text-balance">
-            Ready to start with AI patent analysis?
-          </h2>
-          <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            See how AI can cut your patent drafting time from 3 hours to 20 minutes
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <TalkToSalesTrigger 
-              variant="default" 
-              size="lg"
-              className="px-8 py-3"
-            >
-              Schedule Demo
-            </TalkToSalesTrigger>
-            <a 
-              href="/talk-to-sales" 
-              className="inline-flex items-center justify-center px-8 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
-            >
-              Learn More
-            </a>
-          </div>
-        </div>
+
       </div>
       {/* Additional bottom spacing for features section */}
       <div className="h-20 md:h-32 lg:h-40"></div>
