@@ -7,7 +7,7 @@ import TalkToSalesModal from "./TalkToSalesModal"
 interface TalkToSalesTriggerProps {
   variant?: "default" | "outline" | "secondary" | "ghost" | "link"
   size?: "default" | "sm" | "lg" | "icon"
-  children?: React.ReactNode
+  children?: string
   className?: string
 }
 

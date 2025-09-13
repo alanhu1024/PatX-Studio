@@ -14,7 +14,7 @@ const nextConfig = {
   // 启用严格模式
   reactStrictMode: true,
   // 优化构建
-  swcMinify: true,
+  // swcMinify: true, // This is now default in Next.js 13+
   // 启用ESLint
   eslint: {
     ignoreDuringBuilds: false,
