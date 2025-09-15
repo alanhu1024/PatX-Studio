@@ -11,7 +11,7 @@ export { default as PricingSection } from './PricingSection';
 export { default as Footer } from './Footer';
 
 // Talk to Sales components
-export { default as TalkToSalesForm } from './TalkToSalesForm';
-export { default as TalkToSalesModal } from './TalkToSalesModal';
-export { default as TalkToSalesPage } from './TalkToSalesPage';
-export { default as TalkToSalesTrigger } from './TalkToSalesTrigger';
+export { default as TalkToSalesForm } from './TalkToSales/TalkToSalesForm';
+export { default as TalkToSalesModal } from './TalkToSales/TalkToSalesModal';
+export { default as TalkToSalesPage } from './TalkToSales/TalkToSalesPage';
+export { default as TalkToSalesTrigger } from './TalkToSales/TalkToSalesTrigger';

@@ -1,8 +1,14 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ 
+  subsets: ['latin'],
+  display: 'swap',
+  preload: true,
+  fallback: ['system-ui', 'arial', 'sans-serif'],
+  adjustFontFallback: true,
+})
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://patxstudio.com'),
@@ -19,31 +25,22 @@ export const metadata: Metadata = {
     title: 'PatX Studio - AI Patent Claim Charts',
     description: 'Cut claim chart drafting time from 3 hours to 20–30 minutes with audit-ready evidence and export-ready charts.',
     siteName: 'PatX Studio',
-    images: [
-      {
-        url: '/og-image.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'PatX Studio - AI Patent Claim Charts',
-      },
-    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'PatX Studio - AI Patent Claim Charts',
     description: 'Cut claim chart drafting time from 3 hours to 20–30 minutes with audit-ready evidence and export-ready charts.',
-    images: ['/og-image.jpg'],
   },
-  viewport: 'width=device-width, initial-scale=1',
-  themeColor: '#3b82f6',
   manifest: '/manifest.json',
-  icons: {
-    icon: '/favicon.ico',
-    apple: '/apple-touch-icon.png',
-  },
   other: {
     'msapplication-TileColor': '#3b82f6',
   },
+}
+
+export const viewport: Viewport = {
+  themeColor: '#3b82f6',
+  initialScale: 1,
+  width: 'device-width',
 }
 
 export default function RootLayout({
@@ -54,6 +51,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* 字体预加载优化 */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+        <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+        
         {/* 结构化数据 */}
         <script
           type="application/ld+json"
@@ -77,12 +80,8 @@ export default function RootLayout({
             })
           }}
         />
-        
-        {/* 预连接优化 */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className} suppressHydrationWarning>{children}</body>
     </html>
   )
 }

@@ -54,6 +54,11 @@ yarn-error.log*
 
 # Turbo
 .turbo
+.turbo/*.log
+
+# Build outputs
+output/
+**/output.css
 
 # Vercel
 .vercel

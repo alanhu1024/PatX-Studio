@@ -84,16 +84,9 @@ export function Navbar() {
           <div className="flex items-center gap-4">
             <Link
               href="/talk-to-sales"
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-all duration-200 hover:scale-105 relative group"
-            >
-              Talk to sales
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-current transition-all duration-300 group-hover:w-full opacity-0 group-hover:opacity-100"></span>
-            </Link>
-            <Link
-              href="/signup"
               className="px-4 py-2 bg-primary text-primary-foreground rounded-full text-sm font-medium hover:scale-105 hover:shadow-lg hover:shadow-primary/25 transition-all duration-200 relative overflow-hidden group"
             >
-              <span className="relative z-10">Sign up →</span>
+              <span className="relative z-10">Talk to sales</span>
               <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
             </Link>
           </div>

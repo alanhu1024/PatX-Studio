@@ -1,4 +1,4 @@
 packages:
-  - "web-apps/*"
+  - "apps/*"
   - "packages/*"
   - "clients/*"
