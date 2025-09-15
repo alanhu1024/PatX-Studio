@@ -1,0 +1,117 @@
+/* Talk to Sales 组件专用样式 */
+
+/* 左侧产品介绍区域 */
+.sales-benefits-section {
+  @apply flex flex-col justify-center items-start h-full;
+}
+
+.sales-benefits-title {
+  @apply text-4xl font-bold text-gray-900 mb-4 text-balance;
+}
+
+.sales-benefits-subtitle {
+  @apply text-lg text-gray-600 text-pretty;
+}
+
+.sales-benefits-list {
+  @apply space-y-4;
+}
+
+.sales-benefit-item {
+  @apply flex items-start gap-3;
+}
+
+.sales-benefit-icon {
+  @apply bg-orange-100 p-2 rounded-lg;
+}
+
+.sales-benefit-icon svg {
+  @apply h-5 w-5 text-orange-600;
+}
+
+.sales-benefit-text {
+  @apply text-lg font-semibold text-gray-900 mb-1;
+}
+
+/* 右侧表单区域 */
+.sales-form-card {
+  @apply border-slate-200 shadow-sm bg-[#4A9EFF]/10;
+}
+
+.sales-form-header {
+  @apply text-center pb-6;
+}
+
+.sales-form-title {
+  @apply text-2xl font-bold text-gray-900;
+}
+
+.sales-form-description {
+  @apply text-gray-600;
+}
+
+.sales-form-content {
+  @apply space-y-5;
+}
+
+.sales-form-row {
+  @apply grid grid-cols-2 gap-4;
+}
+
+.sales-form-field {
+  @apply space-y-2;
+}
+
+.sales-form-label {
+  @apply text-sm font-medium text-gray-700;
+}
+
+.sales-form-input {
+  @apply border-slate-300 focus:ring-[#4A9EFF] focus:border-[#4A9EFF] bg-white h-11;
+}
+
+.sales-form-textarea {
+  @apply border-slate-300 focus:ring-[#4A9EFF] focus:border-[#4A9EFF] min-h-[90px] bg-white resize-none;
+}
+
+.sales-form-checkbox {
+  @apply border-slate-400;
+}
+
+.sales-form-checkbox-label {
+  @apply text-sm text-slate-600 leading-relaxed;
+}
+
+.sales-form-submit {
+  @apply flex-1 bg-orange-600 hover:bg-orange-700 text-white font-medium h-12 text-base;
+}
+
+.sales-form-cancel {
+  @apply border-slate-300 text-slate-700 hover:bg-slate-50 bg-white h-12;
+}
+
+/* 触发按钮样式 */
+.sales-trigger-button {
+  @apply bg-orange-600 hover:bg-orange-700 text-white;
+}
+
+/* 响应式调整 */
+@media (max-width: 1024px) {
+  .sales-benefits-section {
+    @apply order-2;
+  }
+  
+  .sales-form-section {
+    @apply order-1;
+  }
+}
+
+@media (max-width: 768px) {
+  .sales-benefits-title {
+    @apply text-3xl;
+  }
+  
+  .sales-form-row {
+    @apply grid-cols-1;
+  }
+}
