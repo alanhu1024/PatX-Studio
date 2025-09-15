@@ -25,7 +25,6 @@ export default function TalkToSalesForm({ isModal = false, onClose }: TalkToSale
     phone: "",
     companySize: "",
     currentProcess: "",
-    message: "",
     agreeToTerms: false,
   })
 
@@ -114,10 +113,10 @@ export default function TalkToSalesForm({ isModal = false, onClose }: TalkToSale
           <Card className="border-slate-200 shadow-sm bg-[#4A9EFF]/10">
             <CardHeader className="text-center pb-6">
               <CardTitle className="text-2xl font-bold text-gray-900">
-                {isModal ? "Talk to Sales" : "Schedule Demo"}
+                {isModal ? "Talk to Sales" : "Join the Waitlist"}
               </CardTitle>
               <CardDescription className="text-gray-600">
-                See how AI can transform your patent workflow.
+                Be the first to know when we launch.
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -194,19 +193,6 @@ export default function TalkToSalesForm({ isModal = false, onClose }: TalkToSale
                   </div>
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="message" className="text-sm font-medium text-gray-700">
-                    What are your patent analysis needs?
-                  </Label>
-                  <Textarea
-                    id="message"
-                    placeholder="Tell us about your current challenges..."
-                    value={formData.message}
-                    onChange={(e) => handleInputChange("message", e.target.value)}
-                    className="border-slate-300 focus:ring-[#4A9EFF] focus:border-[#4A9EFF] min-h-[90px] bg-white resize-none"
-                  />
-                </div>
-
                 <div className="flex items-center space-x-2 pt-2">
                   <Checkbox
                     id="terms"
@@ -225,7 +211,7 @@ export default function TalkToSalesForm({ isModal = false, onClose }: TalkToSale
                     className="flex-1 bg-orange-600 hover:bg-orange-700 text-white font-medium h-12 text-base"
                     disabled={!formData.agreeToTerms}
                   >
-                    Schedule Demo
+                    Join Waitlist
                   </Button>
                   {isModal && onClose && (
                     <Button

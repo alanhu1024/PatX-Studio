@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 
 const PRICING = {
   monthly: {
@@ -135,17 +136,19 @@ function PriceCard({
           </li>
         ))}
       </ul>
-      <button
-        className={`w-full px-6 py-3 rounded-lg font-semibold transition-all duration-200 mt-auto ${
-          highlight
-            ? "bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800 shadow-lg hover:shadow-xl transform hover:scale-105"
-            : isFree
-            ? "bg-green-600 text-white hover:bg-green-700"
-            : "bg-gray-900 text-white hover:bg-gray-800"
-        }`}
-      >
-        {cta}
-      </button>
+      <Link href="/talk-to-sales" className="block w-full mt-auto">
+        <button
+          className={`w-full px-6 py-3 rounded-lg font-semibold transition-all duration-200 ${
+            highlight
+              ? "bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800 shadow-lg hover:shadow-xl transform hover:scale-105"
+              : isFree
+              ? "bg-green-600 text-white hover:bg-green-700"
+              : "bg-gray-900 text-white hover:bg-gray-800"
+          }`}
+        >
+          {cta}
+        </button>
+      </Link>
     </div>
   );
 }
@@ -196,9 +199,11 @@ function QuickChartCard({
           </li>
         ))}
       </ul>
-      <button className="w-full px-6 py-3 rounded-lg font-semibold bg-gradient-to-r from-orange-500 to-amber-500 text-white hover:from-orange-600 hover:to-amber-600 transition-all duration-200 transform hover:scale-105 shadow-lg mt-auto">
-        {cta}
-      </button>
+      <Link href="/talk-to-sales" className="block w-full mt-auto">
+        <button className="w-full px-6 py-3 rounded-lg font-semibold bg-gradient-to-r from-orange-500 to-amber-500 text-white hover:from-orange-600 hover:to-amber-600 transition-all duration-200 transform hover:scale-105 shadow-lg">
+          {cta}
+        </button>
+      </Link>
     </div>
   );
 }

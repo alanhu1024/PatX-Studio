@@ -22,14 +22,14 @@ export const CTASection: React.FC = () => {
             {/* CTA buttons */}
             <div className="flex items-center justify-center gap-6 flex-wrap mb-12">
               <Link
-                href="/signup"
+                href="/talk-to-sales"
                 className="px-10 py-5 rounded-full bg-white text-primary font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
               >
                 Start free trial
               </Link>
               
               <Link
-                href="/contact"
+                href="/talk-to-sales"
                 className="px-10 py-5 rounded-full bg-white/20 backdrop-blur-sm text-white font-semibold hover:bg-white/30 transition-all duration-300 border border-white/20"
               >
                 Talk to sales
