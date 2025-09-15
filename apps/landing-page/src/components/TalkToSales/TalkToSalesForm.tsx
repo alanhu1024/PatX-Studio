@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Clock, Target, Download, Zap } from "lucide-react"
+import { supabase } from "@/lib/supabase"
 
 interface TalkToSalesFormProps {
   isModal?: boolean
@@ -27,17 +28,50 @@ export default function TalkToSalesForm({ isModal = false, onClose }: TalkToSale
     currentProcess: "",
     agreeToTerms: false,
   })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState<"success" | "error" | null>(null)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Handle form submission
-    console.log("Form submitted:", formData)
-    
-    // 这里可以添加实际的表单提交逻辑
-    // 比如调用API或发送邮件等
-    
-    if (isModal && onClose) {
-      onClose()
+    setIsSubmitting(true)
+    setSubmitStatus(null)
+
+    const { error } = await supabase.from("talk_to_sales_submissions").insert({
+      first_name: formData.firstName,
+      last_name: formData.lastName,
+      email: formData.email,
+      company: formData.company,
+      job_title: formData.jobTitle,
+      agree_to_terms: formData.agreeToTerms,
+    })
+
+    setIsSubmitting(false)
+
+    if (error) {
+      console.error("Error submitting form:", error)
+      setSubmitStatus("error")
+    } else {
+      setSubmitStatus("success")
+      console.log("Form submitted successfully")
+      
+      // Optionally reset form
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        company: "",
+        jobTitle: "",
+        phone: "",
+        companySize: "",
+        currentProcess: "",
+        agreeToTerms: false,
+      })
+
+      if (isModal && onClose) {
+        setTimeout(() => {
+          onClose()
+        }, 2000) // Close modal after 2 seconds
+      }
     }
   }
 
@@ -209,9 +243,9 @@ export default function TalkToSalesForm({ isModal = false, onClose }: TalkToSale
                   <Button
                     type="submit"
                     className="flex-1 bg-orange-600 hover:bg-orange-700 text-white font-medium h-12 text-base"
-                    disabled={!formData.agreeToTerms}
+                    disabled={!formData.agreeToTerms || isSubmitting}
                   >
-                    Join Waitlist
+                    {isSubmitting ? "Submitting..." : "Join Waitlist"}
                   </Button>
                   {isModal && onClose && (
                     <Button
@@ -224,6 +258,12 @@ export default function TalkToSalesForm({ isModal = false, onClose }: TalkToSale
                     </Button>
                   )}
                 </div>
+                {submitStatus === "success" && (
+                  <p className="text-green-600 text-center mt-4">Thank you! Your submission has been received.</p>
+                )}
+                {submitStatus === "error" && (
+                  <p className="text-red-600 text-center mt-4">Something went wrong. Please try again.</p>
+                )}
               </form>
             </CardContent>
           </Card>
