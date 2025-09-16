@@ -21,16 +21,6 @@ export default function ClaimChartApp() {
     <div className="h-screen flex flex-col bg-background text-foreground">
       {/* Main Layout Container */}
       <div className="flex-1 flex overflow-hidden relative">
-        {!leftPanelOpen && !currentFile && (
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={toggleLeftPanel}
-            className="absolute top-4 left-4 z-10 bg-background/80 backdrop-blur-sm border border-border hover:bg-accent"
-          >
-            <PanelLeft className="h-4 w-4" />
-          </Button>
-        )}
 
         {!rightPanelOpen && !currentFile && (
           <Button

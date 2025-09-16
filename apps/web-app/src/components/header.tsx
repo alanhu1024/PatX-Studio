@@ -1,16 +1,14 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { PanelLeftClose, PanelLeftOpen, MessageSquare, MessageSquareOff } from "lucide-react"
+import { PanelLeftClose, PanelLeftOpen } from "lucide-react"
 
 interface HeaderProps {
   leftPanelOpen: boolean
-  rightPanelOpen: boolean
   onToggleLeftPanel: () => void
-  onToggleRightPanel: () => void
 }
 
-export function Header({ leftPanelOpen, rightPanelOpen, onToggleLeftPanel, onToggleRightPanel }: HeaderProps) {
+export function Header({ leftPanelOpen, onToggleLeftPanel }: HeaderProps) {
   return (
     <div className="h-10 bg-background border-b border-sidebar-border flex items-center justify-between px-3">
       {/* Left Section - Panel Toggle */}
@@ -34,17 +32,8 @@ export function Header({ leftPanelOpen, rightPanelOpen, onToggleLeftPanel, onTog
         </div>
       </div>
 
-      {/* Right Section - Chat Toggle */}
+      {/* Right Section */}
       <div className="flex items-center">
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={onToggleRightPanel}
-          className="h-7 w-7 p-0 hover:bg-sidebar-accent"
-          title={rightPanelOpen ? "Hide AI Assistant" : "Show AI Assistant"}
-        >
-          {rightPanelOpen ? <MessageSquareOff className="h-4 w-4" /> : <MessageSquare className="h-4 w-4" />}
-        </Button>
       </div>
     </div>
   )

@@ -130,7 +130,7 @@ export function AIChat({ currentFile, isOpen, onTogglePanel }: AIChatProps) {
                 <Card className="bg-card/50">
                   <CardContent className="p-3">
                     <p className="text-sm whitespace-pre-wrap">{message.content}</p>
-                    <p className="text-xs text-muted-foreground mt-2">{message.timestamp.toLocaleTimeString()}</p>
+                    <p className="text-xs text-muted-foreground mt-2" suppressHydrationWarning>{message.timestamp.toLocaleTimeString()}</p>
                   </CardContent>
                 </Card>
               </div>

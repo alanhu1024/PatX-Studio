@@ -1,10 +1,11 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Badge } from "@/components/ui/badge"
+import { documentStore, type Document } from "@/lib/stores/document-store"
 import {
   ChevronDown,
   ChevronRight,
@@ -12,8 +13,10 @@ import {
   FileText,
   Folder,
   Plus,
+  Upload,
   Search,
   MoreHorizontal,
+  FilePlus,
   FileImage,
   FilePen as FilePdf,
   Briefcase,
@@ -58,6 +61,7 @@ interface PatentNode {
     | "oaresponse"
     | "evidencelibrary"
     | "claimchart"
+    | "document"
     | "folder"
     | "file"
   children?: PatentNode[]
@@ -198,12 +202,35 @@ export function FileExplorer({
   isOpen,
   onTogglePanel,
 }: FileExplorerProps) {
-  const [expandedFolders, setExpandedFolders] = useState<Set<string>>(new Set(["workspace-1", "matter-1", "family-1"]))
+  const [expandedFolders, setExpandedFolders] = useState<Set<string>>(new Set(["workspace-1", "matter-1", "family-1", "documents-folder"]))
   const [searchQuery, setSearchQuery] = useState("")
   const [viewMode, setViewMode] = useState<"tree" | "group" | "timeline" | "saved">("tree")
   const [filterStage, setFilterStage] = useState<string>("all")
   const [filterJurisdiction, setFilterJurisdiction] = useState<string>("all")
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false)
+  const [documents, setDocuments] = useState<Document[]>([])
+
+  useEffect(() => {
+    // Load initial documents
+    setDocuments(documentStore.getAllDocuments())
+    
+    // Subscribe to document changes
+    const unsubscribe = documentStore.subscribe(() => {
+      setDocuments(documentStore.getAllDocuments())
+    })
+    
+    return unsubscribe
+  }, [])
+
+  const handleCreateDocument = () => {
+    const newDoc = documentStore.createDocument('New Document')
+    onFileSelect(newDoc.id)
+    
+    // Add to open tabs if not already there
+    if (!openTabs.includes(newDoc.id)) {
+      setOpenTabs([...openTabs, newDoc.id])
+    }
+  }
 
   const toggleFolder = (folderId: string) => {
     const newExpanded = new Set(expandedFolders)
@@ -258,6 +285,8 @@ export function FileExplorer({
         return <Database className="h-4 w-4 text-amber-600" />
       case "claimchart":
         return <Table className="h-4 w-4 text-primary" />
+      case "document":
+        return <FileText className="h-4 w-4 text-primary" />
       case "folder":
         return <Folder className="h-4 w-4 text-primary" />
       case "file":
@@ -324,6 +353,28 @@ export function FileExplorer({
     */
   }
 
+  const getPatentTree = (documents: Document[]): PatentNode[] => {
+    const documentNodes: PatentNode[] = documents.map(doc => ({
+      id: doc.id,
+      name: doc.title,
+      type: 'document' as const,
+      updatedAt: doc.updatedAt.toISOString(),
+      extension: 'md'
+    }))
+
+    const mockTree = mockPatentTree.slice()
+    
+    // Add documents folder at the beginning
+    mockTree.unshift({
+      id: "documents-folder",
+      name: "My Documents",
+      type: "folder",
+      children: documentNodes
+    })
+    
+    return mockTree
+  }
+
   const renderFileNode = (node: PatentNode, depth = 0) => {
     const isExpanded = expandedFolders.has(node.id)
     const isSelected = currentFile === node.id
@@ -332,11 +383,15 @@ export function FileExplorer({
     return (
       <div key={node.id}>
         <div
-          className={`flex items-center gap-1 py-1 px-2 hover:bg-sidebar-accent cursor-pointer group ${
-            isSelected ? "bg-sidebar-accent text-sidebar-accent-foreground" : ""
+          className={`group flex items-center gap-1 py-1 px-2 rounded-sm transition-colors duration-150 cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary ${
+            isSelected
+              ? "bg-sidebar-accent text-sidebar-accent-foreground border-l-2 border-primary"
+              : "hover:bg-sidebar-accent"
           }`}
           style={{ paddingLeft: `${depth * 16 + 8}px` }}
           onClick={() => (hasChildren ? toggleFolder(node.id) : handleFileClick(node.id))}
+          role="treeitem"
+          aria-selected={isSelected}
         >
           {hasChildren ? (
             isExpanded ? (
@@ -350,9 +405,11 @@ export function FileExplorer({
 
           {getNodeIcon(node.type, node.extension)}
 
-          <span className="flex-1 text-sm truncate">{node.name}</span>
+          <span className={`flex-1 text-sm truncate group-hover:text-sidebar-accent-foreground ${isSelected ? "font-medium" : ""}`}>
+            {node.name}
+          </span>
 
-          <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100">
+          <div className={`flex items-center gap-1 ${isSelected ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}>
             {renderJurisdictionBadge(node.jurisdiction)}
             {renderCounterBadges(node.counters)}
             {node.version && (
@@ -364,7 +421,11 @@ export function FileExplorer({
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm" className="h-6 w-6 p-0 opacity-0 group-hover:opacity-100">
+              <Button
+                variant="ghost"
+                size="sm"
+                className={`h-6 w-6 p-0 ${isSelected ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
+              >
                 <MoreHorizontal className="h-3 w-3" />
               </Button>
             </DropdownMenuTrigger>
@@ -397,7 +458,16 @@ export function FileExplorer({
               <PanelLeftClose className="h-4 w-4" />
             </Button>
             <Button variant="ghost" size="sm" className="h-6 w-6 p-0" onClick={() => setIsUploadModalOpen(true)}>
-              <Plus className="h-4 w-4" />
+              <Upload className="h-4 w-4" />
+            </Button>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="h-6 w-6 p-0"
+              onClick={handleCreateDocument}
+              title="Create New Document"
+            >
+              <FilePlus className="h-4 w-4" />
             </Button>
           </div>
         </div>
@@ -479,7 +549,7 @@ export function FileExplorer({
 
       {/* File Tree */}
       <ScrollArea className="flex-1">
-        <div className="p-1">{mockPatentTree.map((node) => renderFileNode(node))}</div>
+        <div className="p-1">{getPatentTree(documents).map((node) => renderFileNode(node))}</div>
       </ScrollArea>
       <UploadModal
         isOpen={isUploadModalOpen}
