@@ -4,6 +4,8 @@ import { useEditor, EditorContent } from "@tiptap/react"
 import * as TiptapReact from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
 import Placeholder from "@tiptap/extension-placeholder"
+import { TextSelection } from "@tiptap/pm/state"
+import { joinBackward } from "@tiptap/pm/commands"
 import type { ComponentType } from "react"
 import {
   Type,
@@ -56,19 +58,19 @@ const slashCommands: SlashCommand[] = [
     title: "Heading 1",
     description: "Big section heading",
     icon: <Heading1 className="w-4 h-4" />,
-    command: (editor) => editor.chain().focus().toggleHeading({ level: 1 }).run()
+    command: (editor) => editor.chain().focus().toggleHeading({ level: 2 }).run()
   },
   {
     title: "Heading 2",
     description: "Medium section heading",
     icon: <Heading2 className="w-4 h-4" />,
-    command: (editor) => editor.chain().focus().toggleHeading({ level: 2 }).run()
+    command: (editor) => editor.chain().focus().toggleHeading({ level: 3 }).run()
   },
   {
     title: "Heading 3",
     description: "Small section heading",
     icon: <Heading3 className="w-4 h-4" />,
-    command: (editor) => editor.chain().focus().toggleHeading({ level: 3 }).run()
+    command: (editor) => editor.chain().focus().toggleHeading({ level: 4 }).run()
   },
   {
     title: "Bullet List",
@@ -119,23 +121,54 @@ export function NotionEditor({
     extensions: [
       StarterKit.configure({
         heading: {
-          levels: [1, 2, 3],
+          levels: [1, 2, 3, 4],
         },
       }),
       Placeholder.configure({
         placeholder: ({ node }) => {
           if (node.type.name === 'heading') {
+            if (node.attrs.level === 1) {
+              return 'New Page'
+            } else if (node.attrs.level === 2) {
+              return 'Heading 1'
+            } else if (node.attrs.level === 3) {
+              return 'Heading 2'
+            } else if (node.attrs.level === 4) {
+              return 'Heading 3'
+            }
             return `Heading ${node.attrs.level}`
           }
           return placeholder
         },
         showOnlyWhenEditable: true,
         includeChildren: true,
+        showOnlyCurrent: false, // 确保 placeholder 始终显示
       }),
     ],
     content,
     editable,
     immediatelyRender: false,
+    onUpdate: ({ editor }) => {
+      // 检查是否还有 H1 标题，如果没有则重新创建
+      const doc = editor.state.doc
+      let hasH1 = false
+      doc.descendants((node: any) => {
+        if (node.type.name === 'heading' && node.attrs.level === 1) {
+          hasH1 = true
+          return false
+        }
+      })
+      
+      // 如果没有 H1 标题，在文档开头插入一个
+      if (!hasH1) {
+        const tr = editor.state.tr
+        tr.insert(0, editor.schema.nodes.heading.create({ level: 1 }))
+        editor.view.dispatch(tr)
+      }
+      
+      // 调用原有的 onChange 回调
+      onChange?.(editor.getHTML())
+    },
     editorProps: {
       attributes: {
         class: 'outline-none',
@@ -158,23 +191,94 @@ export function NotionEditor({
           }
         }
 
-        // Backspace at the very start of the first body paragraph -> merge back into title
+        // When pressing Enter inside a heading (outside the leading edge), split
+        // the heading and turn the trailing part into a body paragraph so it
+        // inherits the regular text styling.
+        if (event.key === 'Enter' && !event.shiftKey) {
+          const { state } = view
+          const { selection } = state
+
+          if (selection.empty) {
+            const { $from } = selection as any
+            const parent = $from.parent
+
+            if (parent?.type?.name === 'heading' && $from.parentOffset > 0) {
+              event.preventDefault()
+
+              editor?.chain().focus().splitBlock().setParagraph().run()
+              return true
+            }
+          }
+        }
+
+        // Backspace at the start of a body paragraph following a heading should merge
+        // the paragraph back into the heading so the style matches the preceding block.
         if (event.key === 'Backspace') {
-          const sel: any = view.state.selection as any
-          const $from: any = sel.$from
-          const atStartOfNode = $from.parentOffset === 0
-          const parentTypeName = $from.parent?.type?.name
-          const isParagraphLike = parentTypeName === 'paragraph' || parentTypeName === 'heading'
-          const isFirstTopLevelNode = $from.index(0) === 0
-          if (atStartOfNode && isParagraphLike && isFirstTopLevelNode) {
-            const text = $from.parent?.textContent || ''
-            onBackspaceAtBodyStart?.(text)
-            // 删除整个段落节点，避免在正文残留空行
-            const paraPos = $from.before() // 段落节点在文档中的起始位置
-            const tr = view.state.tr.delete(paraPos, paraPos + $from.parent.nodeSize)
-            view.dispatch(tr)
+          const { state, dispatch } = view
+          const { $from, empty } = state.selection
+
+          if (!empty || $from.parentOffset !== 0) {
+            return false
+          }
+
+          // If at the start of H1, prevent any action
+          if ($from.parent.type.name === 'heading' && $from.parent.attrs.level === 1) {
             return true
           }
+
+          if ($from.parent.type.name !== 'paragraph') {
+            return false
+          }
+
+          // If previous block is a heading, merge the current paragraph into it
+          const parentDepth = $from.depth
+          if (parentDepth > 0) {
+            const paragraphStart = $from.before(parentDepth)
+            const paragraphEnd = $from.after(parentDepth)
+            const resolvedPos = state.doc.resolve(paragraphStart)
+            const previousNode = resolvedPos.nodeBefore
+
+            if (previousNode && previousNode.type.name === 'heading') {
+              event.preventDefault()
+
+              const paragraphFragment = $from.parent.content
+              let tr = state.tr.delete(paragraphStart, paragraphEnd)
+              let headingEndPos = tr.mapping.map(paragraphStart - 1, -1)
+
+              if (paragraphFragment.size > 0) {
+                tr = tr.insert(headingEndPos, paragraphFragment)
+              }
+
+              tr = tr.setSelection(TextSelection.create(tr.doc, headingEndPos))
+              dispatch(tr)
+              return true
+            }
+          }
+
+          // Otherwise, allow default behavior (which should be joinBackward)
+          return false
+        }
+
+        // 防止通过 Delete 键删除 H1 标题段落
+        if (event.key === 'Delete') {
+          const { state } = view
+          const { $from, empty } = state.selection
+
+          // Only handle cursor selections
+          if (!empty) {
+            return false
+          }
+
+          const parent = $from.parent
+          if (parent.type.name === 'heading' && parent.attrs.level === 1) {
+            // If at the end of H1, prevent any action
+            if ($from.parentOffset === parent.content.size) {
+              return true
+            }
+          }
+
+          // Otherwise, allow default behavior
+          return false
         }
 
         if (showSlashMenu) {
@@ -224,9 +328,6 @@ export function NotionEditor({
 
         return false
       }
-    },
-    onUpdate: ({ editor }) => {
-      onChange?.(editor.getHTML())
     },
   })
 
@@ -432,11 +533,27 @@ export function NotionEditor({
           "[&_.ProseMirror_p.is-editor-empty:first-child::before]:float-left",
           "[&_.ProseMirror_p.is-editor-empty:first-child::before]:h-0",
           "[&_.ProseMirror_p.is-editor-empty:first-child::before]:pointer-events-none",
-          "[&_.ProseMirror_h1]:text-3xl",
+          "[&_.ProseMirror_h1.is-editor-empty::before]:content-[attr(data-placeholder)]",
+          "[&_.ProseMirror_h1.is-editor-empty::before]:text-gray-400",
+          "[&_.ProseMirror_h1.is-editor-empty::before]:float-left",
+          "[&_.ProseMirror_h1.is-editor-empty::before]:h-0",
+          "[&_.ProseMirror_h1.is-editor-empty::before]:pointer-events-none",
+          "[&_.ProseMirror_h1.is-editor-empty:first-child::before]:content-[attr(data-placeholder)]",
+          "[&_.ProseMirror_h1.is-editor-empty:first-child::before]:text-gray-400",
+          "[&_.ProseMirror_h1.is-editor-empty:first-child::before]:float-left",
+          "[&_.ProseMirror_h1.is-editor-empty:first-child::before]:h-0",
+          "[&_.ProseMirror_h1.is-editor-empty:first-child::before]:pointer-events-none",
+          "[&_.ProseMirror_h1]:text-4xl",
           "[&_.ProseMirror_h1]:font-bold",
           "[&_.ProseMirror_h1]:mt-8",
-          "[&_.ProseMirror_h1:first-child]:mt-2",
-          "[&_.ProseMirror_h1]:mb-4",
+          "[&_.ProseMirror_h1:first-child]:mt-0",
+          "[&_.ProseMirror_h1:first-child]:mb-6",
+          "[&_.ProseMirror_h1:first-child]:text-4xl",
+          "[&_.ProseMirror_h1:first-child]:font-bold",
+          "[&_.ProseMirror_h1:first-child]:leading-tight",
+          "[&_.ProseMirror_h1:first-child]:placeholder:text-muted-foreground/50",
+          "[&_.ProseMirror_h1:first-child]:placeholder:font-normal",
+          "[&_.ProseMirror_h1:not(:first-child)]:mb-4",
           "[&_.ProseMirror_h2]:text-2xl",
           "[&_.ProseMirror_h2]:font-semibold",
           "[&_.ProseMirror_h2]:mt-6",
@@ -445,6 +562,10 @@ export function NotionEditor({
           "[&_.ProseMirror_h3]:font-semibold",
           "[&_.ProseMirror_h3]:mt-4",
           "[&_.ProseMirror_h3]:mb-2",
+          "[&_.ProseMirror_h4]:text-lg",
+          "[&_.ProseMirror_h4]:font-semibold",
+          "[&_.ProseMirror_h4]:mt-3",
+          "[&_.ProseMirror_h4]:mb-2",
           "[&_.ProseMirror_p]:leading-7",
           "[&_.ProseMirror_p]:mb-4",
           "[&_.ProseMirror_ul]:list-disc",
