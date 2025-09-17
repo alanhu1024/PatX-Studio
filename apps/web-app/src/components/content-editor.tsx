@@ -425,8 +425,6 @@ export function ContentEditor({
                 <span className="text-sm text-muted-foreground" title={fileName}>
                   {displayName}
                 </span>
-                <Lock className="h-3 w-3 text-muted-foreground" />
-                <ChevronDown className="h-3 w-3 text-muted-foreground" />
               </div>
             )}
           </div>
