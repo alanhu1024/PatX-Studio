@@ -1,7 +1,9 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import { Badge } from "@/components/ui/badge"
-import { Wifi, User, FileText, Bot } from "lucide-react"
+import { Wifi, User, FileText, Bot, Clock } from "lucide-react"
+import { documentStore } from "@/lib/stores/document-store"
 
 interface StatusBarProps {
   currentFile: string | null
@@ -10,6 +12,25 @@ interface StatusBarProps {
 }
 
 export function StatusBar({ currentFile, hasUnsavedChanges, aiStatus }: StatusBarProps) {
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null)
+
+  useEffect(() => {
+    const updateLastUpdated = () => {
+      if (currentFile && currentFile.startsWith("doc-")) {
+        const doc = documentStore.getDocument(currentFile)
+        setLastUpdated(doc?.updatedAt ?? null)
+      } else {
+        setLastUpdated(null)
+      }
+    }
+
+    updateLastUpdated()
+    const unsubscribe = documentStore.subscribe(updateLastUpdated)
+    return () => {
+      unsubscribe()
+    }
+  }, [currentFile])
+
   const getAIStatusColor = (status: string) => {
     switch (status) {
       case "ready":
@@ -37,6 +58,12 @@ export function StatusBar({ currentFile, hasUnsavedChanges, aiStatus }: StatusBa
                 <span>Unsaved</span>
               </div>
             )}
+          </div>
+        )}
+        {lastUpdated && (
+          <div className="flex items-center gap-1 text-primary-foreground/80">
+            <Clock className="h-3 w-3" />
+            <span>Updated {lastUpdated.toLocaleString()}</span>
           </div>
         )}
       </div>

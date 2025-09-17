@@ -106,6 +106,7 @@ export function ContentEditor({
   const editorRef = useRef<any | null>(null)
   const titleInputRef = useRef<HTMLTextAreaElement | null>(null)
   const breadcrumbEditRef = useRef<HTMLTextAreaElement | null>(null)
+  const titleFocusDocRef = useRef<string | null>(null)
 
   useEffect(() => {
     if (currentFile && currentFile.startsWith('doc-')) {
@@ -138,6 +139,36 @@ export function ContentEditor({
     }
   }, [currentFile, claimCharts])
 
+  useEffect(() => {
+    if (!currentFile || !currentFile.startsWith('doc-')) {
+      titleFocusDocRef.current = null
+      return
+    }
+
+    if (documentTitle !== '') {
+      titleFocusDocRef.current = null
+      return
+    }
+
+    if (!editorRef.current) {
+      return
+    }
+
+    if (titleFocusDocRef.current === currentFile) {
+      return
+    }
+
+    titleFocusDocRef.current = currentFile
+
+    const editor = editorRef.current
+    const raf = requestAnimationFrame(() => {
+      if (!editorRef.current) return
+      editorRef.current.chain().focus().setTextSelection({ from: 1, to: 1 }).run()
+    })
+
+    return () => cancelAnimationFrame(raf)
+  }, [currentFile, documentTitle])
+
   // 点击外部关闭编辑框
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -169,7 +200,10 @@ export function ContentEditor({
   const handleDocumentUpdate = (content: string) => {
     setDocumentContent(content)
     if (currentFile && currentFile.startsWith('doc-')) {
-      documentStore.updateDocument(currentFile, { content })
+      const existingDoc = documentStore.getDocument(currentFile)
+      if (!existingDoc || existingDoc.content !== content) {
+        documentStore.updateDocument(currentFile, { content })
+      }
     }
   }
 
@@ -177,7 +211,10 @@ export function ContentEditor({
     setDocumentTitle(title)
     setDisplayTitle(title) // 同时更新显示标题，确保面包屑同步
     if (currentFile && currentFile.startsWith('doc-')) {
-      documentStore.updateDocument(currentFile, { title })
+      const existingDoc = documentStore.getDocument(currentFile)
+      if (!existingDoc || existingDoc.title !== title) {
+        documentStore.updateDocument(currentFile, { title })
+      }
     }
   }
 

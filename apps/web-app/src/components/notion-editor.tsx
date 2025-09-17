@@ -122,6 +122,11 @@ export function NotionEditor({
   const [selectedCommandIndex, setSelectedCommandIndex] = useState(0)
   const [query, setQuery] = useState("")
   const slashMenuRef = useRef<HTMLDivElement>(null)
+  const lastSyncedContent = useRef<string>(content)
+  const paragraphSelectionState = useRef<{ paragraphPos: number | null; expanded: boolean }>({
+    paragraphPos: null,
+    expanded: false,
+  })
 
   const filteredCommands = slashCommands.filter(cmd =>
     cmd.title.toLowerCase().includes(query.toLowerCase()) ||
@@ -140,7 +145,7 @@ export function NotionEditor({
         placeholder: ({ node }) => {
           if (node.type.name === 'heading') {
             if (node.attrs.level === 1) {
-              return 'New Page'
+              return 'New page'
             } else if (node.attrs.level === 2) {
               return 'Heading 1'
             } else if (node.attrs.level === 3) {
@@ -179,13 +184,19 @@ export function NotionEditor({
       }
       
       // 调用原有的 onChange 回调
-      onChange?.(editor.getHTML())
+      const html = editor.getHTML()
+      lastSyncedContent.current = html
+      onChange?.(html)
     },
     editorProps: {
       attributes: {
         class: 'outline-none',
       },
       handleKeyDown: (view, event) => {
+        if (!((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'a')) {
+          paragraphSelectionState.current = { paragraphPos: null, expanded: false }
+        }
+
         if (event.key === '/') {
           const { from } = view.state.selection
           const coords = view.coordsAtPos(from)
@@ -200,6 +211,83 @@ export function NotionEditor({
             setQuery("")
             setSelectedCommandIndex(0)
             return false
+          }
+        }
+
+        const isSelectAllKey = (event.metaKey || event.ctrlKey) && !event.shiftKey && !event.altKey && event.key.toLowerCase() === 'a'
+
+        if (isSelectAllKey) {
+          const { state, dispatch } = view
+          const { $from } = state.selection as any
+          const parent = $from.parent
+
+          // Title (H1) select-all should only grab the title text, regardless of repeat presses
+          if (parent?.type?.name === 'heading' && parent.attrs?.level === 1) {
+            event.preventDefault()
+            const depth = $from.depth
+            const start = $from.start(depth)
+            const end = $from.end(depth)
+            const tr = state.tr.setSelection(TextSelection.create(state.doc, start, end))
+            dispatch(tr)
+            paragraphSelectionState.current = { paragraphPos: null, expanded: false }
+            return true
+          }
+
+          if (parent?.type?.name === 'paragraph') {
+            event.preventDefault()
+            const depth = $from.depth
+            const paragraphStart = $from.start(depth)
+            const paragraphEnd = $from.end(depth)
+            const selectionCoversParagraph =
+              state.selection.from === paragraphStart && state.selection.to === paragraphEnd
+
+            const stateRef = paragraphSelectionState.current
+
+            // First press (or moving to a different paragraph) selects the current paragraph only
+            if (!selectionCoversParagraph || stateRef.paragraphPos !== paragraphStart) {
+              const tr = state.tr.setSelection(TextSelection.create(state.doc, paragraphStart, paragraphEnd))
+              dispatch(tr)
+              paragraphSelectionState.current = { paragraphPos: paragraphStart, expanded: false }
+              return true
+            }
+
+            // Second consecutive press expands to all body content (excluding the title)
+            if (!stateRef.expanded) {
+              const doc = state.doc
+              let accumulatedPos = 0
+              let bodyStart = 1
+              let bodyStartFound = false
+
+              for (let i = 0; i < doc.childCount; i++) {
+                const node = doc.child(i)
+                const isTitleHeading = i === 0 && node.type.name === 'heading' && node.attrs?.level === 1
+
+                if (isTitleHeading) {
+                  accumulatedPos += node.nodeSize
+                  continue
+                }
+
+                bodyStart = accumulatedPos + 1
+                bodyStartFound = true
+                break
+              }
+
+              const bodyEnd = doc.content.size
+
+              if (bodyStartFound && bodyStart < bodyEnd) {
+                const tr = state.tr.setSelection(TextSelection.create(doc, bodyStart, bodyEnd))
+                dispatch(tr)
+                paragraphSelectionState.current = { paragraphPos: paragraphStart, expanded: true }
+                return true
+              }
+
+              // If there is no body content, keep the paragraph selection
+              paragraphSelectionState.current = { paragraphPos: paragraphStart, expanded: true }
+              return true
+            }
+
+            // Subsequent presses keep the body selection intact
+            return true
           }
         }
 
@@ -373,6 +461,36 @@ export function NotionEditor({
       return () => document.removeEventListener('mousedown', handleClickOutside)
     }
   }, [showSlashMenu])
+
+  useEffect(() => {
+    if (showSlashMenu && slashMenuRef.current) {
+      const commandButtons = Array.from(slashMenuRef.current.querySelectorAll('button'))
+      const selectedButton = commandButtons[selectedCommandIndex]
+
+      if (selectedButton) {
+        selectedButton.scrollIntoView({
+          block: 'nearest',
+        })
+      }
+    }
+  }, [selectedCommandIndex, showSlashMenu])
+
+  // Keep the editor in sync when the parent updates the content prop, but avoid
+  // resetting the document on every keystroke by tracking the last synced value.
+  useEffect(() => {
+    if (!editor) return
+
+    if (lastSyncedContent.current === content) {
+      return
+    }
+
+    const currentHtml = editor.getHTML()
+    if (currentHtml !== content) {
+      editor.commands.setContent(content, false)
+    }
+
+    lastSyncedContent.current = content
+  }, [content, editor])
 
   if (!editor) {
     return null

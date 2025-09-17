@@ -54,12 +54,12 @@ class DocumentStore {
     }
   }
 
-  createDocument(title: string = 'Untitled Document'): Document {
+  createDocument(title: string = ''): Document {
     const id = `doc-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
     const doc: Document = {
       id,
       title,
-      content: '<h1>' + title + '</h1><p>Start typing here...</p>',
+      content: '<p></p>',
       createdAt: new Date(),
       updatedAt: new Date(),
       type: 'document'
