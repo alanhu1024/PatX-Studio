@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { documentStore, type Document } from "@/lib/stores/document-store"
-import { FileText, PanelLeftClose, Plus, Search, Trash2, Upload } from "lucide-react"
+import { FileText, PanelLeftClose, Plus, Search, Trash2, Upload, Home, Bot } from "lucide-react"
 import { UploadModal } from "@/components/upload-modal"
 
 interface FileExplorerProps {
@@ -26,7 +26,6 @@ export function FileExplorer({
   onTogglePanel,
 }: FileExplorerProps) {
   void _isOpen
-  const [searchQuery, setSearchQuery] = useState("")
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false)
   const [documents, setDocuments] = useState<Document[]>([])
 
@@ -49,7 +48,6 @@ export function FileExplorer({
 
   const handleCreateDocument = () => {
     const newDoc = documentStore.createDocument()
-    setSearchQuery("")
     handleFileClick(newDoc.id)
   }
 
@@ -69,11 +67,6 @@ export function FileExplorer({
     // Here you would typically refresh the file list or update the state
     // For now, we'll just log the output.
   }
-  const normalizedQuery = searchQuery.trim().toLowerCase()
-  const filteredDocuments = documents.filter((doc) => {
-    const resolvedTitle = (doc.title.trim() || 'New page').toLowerCase()
-    return resolvedTitle.includes(normalizedQuery)
-  })
 
   const truncateDocumentName = (name: string) => {
     const MAX_NAME_LENGTH = 28
@@ -85,8 +78,9 @@ export function FileExplorer({
 
   return (
     <div className="h-full flex flex-col">
+      {/* 顶部区域：Explorer标题和操作按钮 */}
       <div className="p-3 border-b border-sidebar-border">
-        <div className="mb-2 flex items-center justify-between">
+        <div className="flex items-center justify-between">
           <h2 className="text-sm font-semibold text-sidebar-foreground">Explorer</h2>
           <div className="flex items-center gap-1">
             <Button
@@ -118,22 +112,54 @@ export function FileExplorer({
             </Button>
           </div>
         </div>
+      </div>
 
-        <div className="relative">
-          <Search className="absolute left-2 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <Input
-            placeholder="搜索文档"
-            value={searchQuery}
-            onChange={(event) => setSearchQuery(event.target.value)}
-            className="h-8 pl-8 text-sm"
-          />
+      {/* 固定功能区域 */}
+      <div className="border-b border-sidebar-border">
+        <div className="p-2 space-y-1">
+          {/* 搜索 */}
+          <button
+            className="w-full flex items-center rounded-md px-2 py-2 text-sm transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800"
+            onClick={() => {
+              // 打开搜索功能逻辑
+              console.log("Open search")
+            }}
+          >
+            <Search className="h-4 w-4 text-neutral-500 flex-shrink-0 mr-3" />
+            <span className="text-neutral-700 dark:text-neutral-400">搜索</span>
+          </button>
+
+          {/* 主页 */}
+          <button
+            className="w-full flex items-center rounded-md px-2 py-2 text-sm transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800"
+            onClick={() => {
+              // 导航到主页逻辑
+              console.log("Navigate to home")
+            }}
+          >
+            <Home className="h-4 w-4 text-neutral-500 flex-shrink-0 mr-3" />
+            <span className="text-neutral-700 dark:text-neutral-400">主页</span>
+          </button>
+
+          {/* PatX AI */}
+          <button
+            className="w-full flex items-center rounded-md px-2 py-2 text-sm transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800"
+            onClick={() => {
+              // 打开AI功能逻辑
+              console.log("Open PatX AI")
+            }}
+          >
+            <Bot className="h-4 w-4 text-neutral-500 flex-shrink-0 mr-3" />
+            <span className="text-neutral-700 dark:text-neutral-400">PatX AI</span>
+          </button>
         </div>
       </div>
 
+      {/* 文档列表区域 */}
       <ScrollArea className="flex-1">
         <div className="space-y-1 p-2">
-          {filteredDocuments.length > 0 ? (
-            filteredDocuments.map((doc) => {
+          {documents.length > 0 ? (
+            documents.map((doc) => {
               const isSelected = currentFile === doc.id
               const resolvedTitle = doc.title.trim() || 'New page'
               const displayName = truncateDocumentName(resolvedTitle)
@@ -142,7 +168,7 @@ export function FileExplorer({
               return (
                 <div
                   key={doc.id}
-                  className={`group flex items-center gap-2 rounded-md px-2 py-1.5 text-sm transition-colors ${
+                  className={`group flex items-center rounded-md px-2 py-1.5 text-sm transition-colors ${
                     isSelected
                       ? 'bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-neutral-50'
                       : 'cursor-pointer hover:bg-neutral-100 dark:hover:bg-neutral-800'
@@ -158,7 +184,7 @@ export function FileExplorer({
                   }}
                 >
                   <FileText
-                    className={`h-4 w-4 flex-shrink-0 ${
+                    className={`h-4 w-4 flex-shrink-0 mr-3 ${
                       isSelected
                         ? 'text-neutral-600 dark:text-neutral-400'
                         : 'text-neutral-500 group-hover:text-neutral-600 dark:text-neutral-500 dark:group-hover:text-neutral-400'
