@@ -3,6 +3,7 @@
 import { useEditor, EditorContent } from "@tiptap/react"
 import * as TiptapReact from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
+import Heading from "@tiptap/extension-heading"
 import Placeholder from "@tiptap/extension-placeholder"
 import { TextSelection } from "@tiptap/pm/state"
 import { joinBackward } from "@tiptap/pm/commands"
@@ -28,6 +29,16 @@ import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { useCallback, useState, useRef, useEffect } from "react"
 import { Toggle } from "@/components/ui/toggle"
+
+const CustomHeading = Heading.extend({
+  addKeyboardShortcuts() {
+    return {
+      "Mod-Alt-1": () => this.editor.chain().focus().toggleHeading({ level: 2 }).run(),
+      "Mod-Alt-2": () => this.editor.chain().focus().toggleHeading({ level: 3 }).run(),
+      "Mod-Alt-3": () => this.editor.chain().focus().toggleHeading({ level: 4 }).run(),
+    }
+  },
+})
 
 interface NotionEditorProps {
   content?: string
@@ -120,9 +131,10 @@ export function NotionEditor({
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
-        heading: {
-          levels: [1, 2, 3, 4],
-        },
+        heading: false, // Disable default heading behavior from StarterKit
+      }),
+      CustomHeading.configure({
+        levels: [1, 2, 3, 4],
       }),
       Placeholder.configure({
         placeholder: ({ node }) => {
@@ -554,15 +566,15 @@ export function NotionEditor({
           "[&_.ProseMirror_h1:first-child]:placeholder:text-muted-foreground/50",
           "[&_.ProseMirror_h1:first-child]:placeholder:font-normal",
           "[&_.ProseMirror_h1:not(:first-child)]:mb-4",
-          "[&_.ProseMirror_h2]:text-2xl",
+          "[&_.ProseMirror_h2]:text-3xl",
           "[&_.ProseMirror_h2]:font-semibold",
           "[&_.ProseMirror_h2]:mt-6",
           "[&_.ProseMirror_h2]:mb-3",
-          "[&_.ProseMirror_h3]:text-xl",
+          "[&_.ProseMirror_h3]:text-2xl",
           "[&_.ProseMirror_h3]:font-semibold",
           "[&_.ProseMirror_h3]:mt-4",
           "[&_.ProseMirror_h3]:mb-2",
-          "[&_.ProseMirror_h4]:text-lg",
+          "[&_.ProseMirror_h4]:text-xl",
           "[&_.ProseMirror_h4]:font-semibold",
           "[&_.ProseMirror_h4]:mt-3",
           "[&_.ProseMirror_h4]:mb-2",
