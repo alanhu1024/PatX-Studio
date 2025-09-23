@@ -12,7 +12,7 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://patxstudio.com'),
+  metadataBase: new URL('https://patx.ai'),
   title: 'PatX Studio - AI Patent Claim Charts',
   description: 'Cut claim chart drafting time from 3 hours to 20–30 minutes with audit-ready evidence and export-ready charts. Faster, more reliable, and more cost-effective AI patent claim charts.',
   keywords: ['AI patent', 'claim charts', 'patent analysis', 'legal tech', 'patent software', 'AI legal tools'],
@@ -67,16 +67,16 @@ export default function RootLayout({
               "@type": "WebSite",
               "name": "PatX Studio",
               "description": "Cut claim chart drafting time from 3 hours to 20–30 minutes with audit-ready evidence and export-ready charts.",
-              "url": "https://patxstudio.com",
+              "url": "https://patx.ai",
               "potentialAction": {
                 "@type": "SearchAction",
-                "target": "https://patxstudio.com/search?q={search_term_string}",
+                "target": "https://patx.ai/search?q={search_term_string}",
                 "query-input": "required name=search_term_string"
               },
               "publisher": {
                 "@type": "Organization",
                 "name": "AIGROW Inc.",
-                "url": "https://patxstudio.com"
+                "url": "https://patx.ai"
               }
             })
           }}

@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://patxstudio.com/sitemap.xml
+Sitemap: https://patx.ai/sitemap.xml
 
 # Crawl-delay
 Crawl-delay: 1
