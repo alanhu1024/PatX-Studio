@@ -1,6 +1,18 @@
 User-agent: *
 Allow: /
 
+# 排除技术文件和资源
+Disallow: /_next/static/
+Disallow: /_next/
+Disallow: /api/
+Disallow: /*.woff
+Disallow: /*.woff2
+Disallow: /*.ttf
+Disallow: /*.eot
+Disallow: /manifest.json
+Disallow: /favicon.ico
+Disallow: /*.map
+
 # Sitemap
 Sitemap: https://patx.ai/sitemap.xml
 
