@@ -5,9 +5,9 @@ import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'v0 App',
-  description: 'Created with v0',
-  generator: 'v0.app',
+  metadataBase: new URL('https://patx.ai'),
+  title: 'PatX Studio - AI Patent Analysis',
+  description: 'Advanced AI-powered patent analysis and claim chart generation platform',
 }
 
 export default function RootLayout({
