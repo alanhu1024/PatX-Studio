@@ -66,6 +66,13 @@ export function Navbar() {
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-current transition-all duration-300 group-hover:w-full opacity-0 group-hover:opacity-100"></span>
               </Link>
               <Link
+                href={isHomePage ? "#faq" : "/#faq"}
+                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-all duration-200 hover:scale-105 relative group"
+              >
+                FAQ
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-current transition-all duration-300 group-hover:w-full opacity-0 group-hover:opacity-100"></span>
+              </Link>
+              <Link
                 href={isHomePage ? "#testimonials" : "/#testimonials"}
                 className="text-sm font-medium text-muted-foreground hover:text-foreground transition-all duration-200 hover:scale-105 relative group"
               >
