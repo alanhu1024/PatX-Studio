@@ -21,6 +21,9 @@ export const metadata: Metadata = {
   creator: 'AIGROW Inc.',
   publisher: 'AIGROW Inc.',
   robots: 'index, follow',
+  alternates: {
+    canonical: 'https://patx.ai/',
+  },
   openGraph: {
     type: 'website',
     url: '/',
