@@ -9,9 +9,11 @@ Disallow: /*.woff
 Disallow: /*.woff2
 Disallow: /*.ttf
 Disallow: /*.eot
-Disallow: /manifest.json
 Disallow: /favicon.ico
 Disallow: /*.map
+
+# 允许重要文件
+Allow: /manifest.json
 
 # Sitemap
 Sitemap: https://patx.ai/sitemap.xml

@@ -69,11 +69,6 @@ export default function RootLayout({
               "name": "PatX Studio",
               "description": "Cut claim chart drafting time from 3 hours to 20–30 minutes with audit-ready evidence and export-ready charts.",
               "url": "https://patx.ai",
-              "potentialAction": {
-                "@type": "SearchAction",
-                "target": "https://patx.ai/search?q={search_term_string}",
-                "query-input": "required name=search_term_string"
-              },
               "publisher": {
                 "@type": "Organization",
                 "name": "AIGROW Inc.",
