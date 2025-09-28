@@ -1,5 +1,14 @@
 import Link from "next/link";
 import { Navbar, Footer } from "@/components";
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Security - PatX Studio',
+  description: 'Security information for PatX Studio - AI Patent Claim Charts',
+  alternates: {
+    canonical: 'https://patx.ai/security',
+  },
+};
 
 export default function SecurityPage() {
   return (

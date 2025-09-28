@@ -24,6 +24,23 @@ const nextConfig = {
     ignoreBuildErrors: false,
   },
 
+  // 重定向配置 - www 到非 www
+  async redirects() {
+    return [
+      {
+        source: '/(.*)',
+        has: [
+          {
+            type: 'host',
+            value: 'www.patx.ai',
+          },
+        ],
+        destination: 'https://patx.ai/:path*',
+        permanent: true,
+      },
+    ]
+  },
+
   // 静态资源优化和安全头部
   async headers() {
     return [
