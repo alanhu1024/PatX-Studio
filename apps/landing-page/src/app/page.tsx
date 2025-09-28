@@ -5,6 +5,7 @@ import {
   HeroSection, 
   LogoCloud, 
   FeatureSection,
+  FAQSection,
   TestimonialsSection,
   PricingSection,
   CTASection,
@@ -31,6 +32,7 @@ export default function Home() {
         <HeroSection />
         <LogoCloud />
         <FeatureSection />
+        <FAQSection />
         <TestimonialsSection />
         <PricingSection />
         <CTASection />
