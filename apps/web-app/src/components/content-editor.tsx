@@ -145,7 +145,9 @@ export function ContentEditor({
       return
     }
 
-    if (documentTitle !== '') {
+    const hasBodyContent = documentContent.trim() !== ''
+
+    if (documentTitle !== '' || hasBodyContent) {
       titleFocusDocRef.current = null
       return
     }
@@ -167,7 +169,7 @@ export function ContentEditor({
     })
 
     return () => cancelAnimationFrame(raf)
-  }, [currentFile, documentTitle])
+  }, [currentFile, documentTitle, documentContent])
 
   // 点击外部关闭编辑框
   useEffect(() => {

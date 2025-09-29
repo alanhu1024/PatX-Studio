@@ -1,13 +1,13 @@
 "use client"
 
 import { useEditor, EditorContent } from "@tiptap/react"
-import * as TiptapReact from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
 import Heading from "@tiptap/extension-heading"
 import Placeholder from "@tiptap/extension-placeholder"
+import FloatingMenu from "@tiptap/extension-floating-menu"
+import BubbleMenu from "@tiptap/extension-bubble-menu"
 import { TextSelection } from "@tiptap/pm/state"
 import { joinBackward } from "@tiptap/pm/commands"
-import type { ComponentType } from "react"
 import {
   Type,
   Heading1,
@@ -161,6 +161,16 @@ export function NotionEditor({
         includeChildren: true,
         showOnlyCurrent: false, // 确保 placeholder 始终显示
       }),
+      FloatingMenu.configure({
+        HTMLAttributes: {
+          class: 'flex items-center gap-1 bg-background border rounded-lg shadow-lg p-1',
+        },
+      }),
+      BubbleMenu.configure({
+        HTMLAttributes: {
+          class: 'flex items-center gap-1 bg-background border rounded-lg shadow-lg p-1',
+        },
+      }),
     ],
     content,
     editable,
@@ -291,9 +301,9 @@ export function NotionEditor({
           }
         }
 
-        // When pressing Enter inside a heading (outside the leading edge), split
-        // the heading and turn the trailing part into a body paragraph so it
-        // inherits the regular text styling.
+        // When pressing Enter inside a heading, split the heading and turn the 
+        // trailing part into a body paragraph so it inherits the regular text styling.
+        // This works both at the beginning and in the middle of the heading text.
         if (event.key === 'Enter' && !event.shiftKey) {
           const { state } = view
           const { selection } = state
@@ -302,10 +312,40 @@ export function NotionEditor({
             const { $from } = selection as any
             const parent = $from.parent
 
-            if (parent?.type?.name === 'heading' && $from.parentOffset > 0) {
+            if (parent?.type?.name === 'heading') {
               event.preventDefault()
 
-              editor?.chain().focus().splitBlock().setParagraph().run()
+              if ($from.parentOffset === 0) {
+                // At the beginning of heading - move the entire heading content to a new paragraph
+                const headingContent = parent.textContent
+                const headingPos = $from.before($from.depth)
+                const headingNodeSize = parent.nodeSize
+                const emptyHeading = state.schema.nodes.heading.create(parent.attrs)
+
+                const paragraphNode = state.schema.nodes.paragraph.create(
+                  null,
+                  headingContent.length > 0 ? state.schema.text(headingContent) : undefined
+                )
+
+                let tr = state.tr
+
+                // Replace the existing heading with an empty heading (preserves attributes)
+                tr = tr.replaceWith(headingPos, headingPos + headingNodeSize, emptyHeading)
+
+                // Determine the position immediately after the heading in the updated document
+                const mappedHeadingEnd = tr.mapping.map(headingPos + headingNodeSize, -1)
+
+                // Insert the paragraph carrying the original heading text
+                tr = tr.insert(mappedHeadingEnd, paragraphNode)
+
+                // Place cursor at the very start of the inserted paragraph
+                tr = tr.setSelection(TextSelection.create(tr.doc, mappedHeadingEnd + 1))
+
+                view.dispatch(tr)
+              } else {
+                // In the middle or end of heading - split normally
+                editor?.chain().focus().splitBlock().setParagraph().run()
+              }
               return true
             }
           }
@@ -496,108 +536,13 @@ export function NotionEditor({
     return null
   }
 
-  // Some builds of @tiptap/react may not export these menu components.
-  // Guard their usage to avoid "Element type is invalid" runtime errors.
-  const FloatingMenuComponent = ((TiptapReact as any).FloatingMenu as unknown) as ComponentType<any> | undefined
-  const BubbleMenuComponent = ((TiptapReact as any).BubbleMenu as unknown) as ComponentType<any> | undefined
+  // FloatingMenu and BubbleMenu are now configured as extensions
+  // They will be automatically rendered by the editor
 
   return (
     <div className="relative w-full">
       {editable ? (
         <>
-          {FloatingMenuComponent ? (
-            <FloatingMenuComponent
-              editor={editor}
-              tippyOptions={{ duration: 100 }}
-              className="flex items-center gap-1 bg-background border rounded-lg shadow-lg p-1"
-            >
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-                className={cn(
-                  "h-8 w-8 p-0",
-                  editor.isActive('heading', { level: 1 }) && "bg-muted"
-                )}
-              >
-                <Heading1 className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-                className={cn(
-                  "h-8 w-8 p-0",
-                  editor.isActive('heading', { level: 2 }) && "bg-muted"
-                )}
-              >
-                <Heading2 className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => editor.chain().focus().toggleBulletList().run()}
-                className={cn(
-                  "h-8 w-8 p-0",
-                  editor.isActive('bulletList') && "bg-muted"
-                )}
-              >
-                <List className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => editor.chain().focus().toggleOrderedList().run()}
-                className={cn(
-                  "h-8 w-8 p-0",
-                  editor.isActive('orderedList') && "bg-muted"
-                )}
-              >
-                <ListOrdered className="h-4 w-4" />
-              </Button>
-            </FloatingMenuComponent>
-          ) : null}
-
-          {BubbleMenuComponent ? (
-            <BubbleMenuComponent
-              editor={editor}
-              tippyOptions={{ duration: 100 }}
-              className="flex items-center gap-1 bg-background border rounded-lg shadow-lg p-1"
-            >
-              <Toggle
-                size="sm"
-                pressed={editor.isActive("bold")}
-                onPressedChange={() => editor.chain().focus().toggleBold().run()}
-                className="h-8 w-8 p-0"
-              >
-                <Bold className="h-4 w-4" />
-              </Toggle>
-              <Toggle
-                size="sm"
-                pressed={editor.isActive("italic")}
-                onPressedChange={() => editor.chain().focus().toggleItalic().run()}
-                className="h-8 w-8 p-0"
-              >
-                <Italic className="h-4 w-4" />
-              </Toggle>
-              <Toggle
-                size="sm"
-                pressed={editor.isActive("strike")}
-                onPressedChange={() => editor.chain().focus().toggleStrike().run()}
-                className="h-8 w-8 p-0"
-              >
-                <Strikethrough className="h-4 w-4" />
-              </Toggle>
-              <Toggle
-                size="sm"
-                pressed={editor.isActive("code")}
-                onPressedChange={() => editor.chain().focus().toggleCode().run()}
-                className="h-8 w-8 p-0"
-              >
-                <Code className="h-4 w-4" />
-              </Toggle>
-            </BubbleMenuComponent>
-          ) : null}
 
           {showSlashMenu && (
             <div

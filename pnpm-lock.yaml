@@ -205,6 +205,9 @@ importers:
       '@tiptap/extension-floating-menu':
         specifier: ^3.4.3
         version: 3.4.3(@floating-ui/dom@1.7.4)(@tiptap/core@3.4.3(@tiptap/pm@3.4.3))(@tiptap/pm@3.4.3)
+      '@tiptap/extension-heading':
+        specifier: ^3.6.2
+        version: 3.6.2(@tiptap/core@3.4.3(@tiptap/pm@3.4.3))
       '@tiptap/extension-placeholder':
         specifier: ^3.4.3
         version: 3.4.3(@tiptap/extensions@3.4.3(@tiptap/core@3.4.3(@tiptap/pm@3.4.3))(@tiptap/pm@3.4.3))
@@ -1602,10 +1605,10 @@ packages:
     peerDependencies:
       '@tiptap/core': ^3.4.3
 
-  '@tiptap/extension-heading@3.4.3':
-    resolution: {integrity: sha512-s9X0pvkpE/Tfz/Ui5ETcmSj41MXj78UoWGfZHf3lKqtoDbmIlLEKZRBYuKUMC7812gig5AeqryPBqvEtjPSq8A==}
+  '@tiptap/extension-heading@3.6.2':
+    resolution: {integrity: sha512-JQ2yjwXGAiwGc+MhS1mULBr354MHfmWqVDQLRg8ey6LkdXggTDDJ1Ni3GrUS7B5YcA/ICdhr4krXaQpNkT5Syw==}
     peerDependencies:
-      '@tiptap/core': ^3.4.3
+      '@tiptap/core': ^3.6.2
 
   '@tiptap/extension-horizontal-rule@3.4.3':
     resolution: {integrity: sha512-xVc1FB4KzcjiL+gKUo4Ou0nBHjEzIbSaDt1q0Mr3DDSYqwPDb9+rESkk+93kxkk5SwhkDjsvWiWD1jTrjH18Lg==}
@@ -5855,7 +5858,7 @@ snapshots:
     dependencies:
       '@tiptap/core': 3.4.3(@tiptap/pm@3.4.3)
 
-  '@tiptap/extension-heading@3.4.3(@tiptap/core@3.4.3(@tiptap/pm@3.4.3))':
+  '@tiptap/extension-heading@3.6.2(@tiptap/core@3.4.3(@tiptap/pm@3.4.3))':
     dependencies:
       '@tiptap/core': 3.4.3(@tiptap/pm@3.4.3)
 
@@ -5966,7 +5969,7 @@ snapshots:
       '@tiptap/extension-dropcursor': 3.4.3(@tiptap/extensions@3.4.3(@tiptap/core@3.4.3(@tiptap/pm@3.4.3))(@tiptap/pm@3.4.3))
       '@tiptap/extension-gapcursor': 3.4.3(@tiptap/extensions@3.4.3(@tiptap/core@3.4.3(@tiptap/pm@3.4.3))(@tiptap/pm@3.4.3))
       '@tiptap/extension-hard-break': 3.4.3(@tiptap/core@3.4.3(@tiptap/pm@3.4.3))
-      '@tiptap/extension-heading': 3.4.3(@tiptap/core@3.4.3(@tiptap/pm@3.4.3))
+      '@tiptap/extension-heading': 3.6.2(@tiptap/core@3.4.3(@tiptap/pm@3.4.3))
       '@tiptap/extension-horizontal-rule': 3.4.3(@tiptap/core@3.4.3(@tiptap/pm@3.4.3))(@tiptap/pm@3.4.3)
       '@tiptap/extension-italic': 3.4.3(@tiptap/core@3.4.3(@tiptap/pm@3.4.3))
       '@tiptap/extension-link': 3.4.3(@tiptap/core@3.4.3(@tiptap/pm@3.4.3))(@tiptap/pm@3.4.3)
