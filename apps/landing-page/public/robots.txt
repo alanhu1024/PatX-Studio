@@ -1,19 +1,18 @@
 User-agent: *
-Allow: /
+# ✅ 明确允许关键文件
+Allow: /manifest.json
+Allow: /sitemap.xml
 
-# 排除技术文件和资源
+# 🚫 排除技术文件和资源
 Disallow: /_next/static/
 Disallow: /_next/
 Disallow: /api/
-Disallow: /*.woff
-Disallow: /*.woff2
-Disallow: /*.ttf
-Disallow: /*.eot
-Disallow: /favicon.ico
-Disallow: /*.map
-
-# 允许重要文件
-Allow: /manifest.json
+Disallow: /*.woff$
+Disallow: /*.woff2$
+Disallow: /*.ttf$
+Disallow: /*.eot$
+Disallow: /favicon.ico$
+Disallow: /*.map$
 
 # Sitemap
 Sitemap: https://patx.ai/sitemap.xml

@@ -29,6 +29,37 @@
 - Use imperative, scoped messages. Preferred prefixes: `feat:`, `fix:`, `chore:`, `docs:`, `refactor:`, `test:` (Git history shows mixed style; standardize going forward).
 - PRs must include: concise summary, context/linked issues, screenshots for UI changes, and clear test instructions. Ensure `pnpm lint` and backend tests pass.
 
+## Git Flow & Branch Management
+- Use standard Git Flow strategy: `feature` → `develop` → `staging` → `main`
+- Each merge step requires: switch branch → pull latest → merge → push
+- Never merge directly from feature branches to main
+- Ensure working directory is clean before merging
+- Resolve conflicts before continuing the flow
+- Push to remote after each merge step
+- After successfully pushing to main, switch back to the original branch
+
+### Git Flow Commands
+```bash
+# feature → develop
+git checkout develop
+git pull origin develop
+git merge feature/xxx
+git push origin develop
+
+# develop → staging
+git checkout staging
+git pull origin staging
+git merge develop
+git push origin staging
+
+# staging → main
+git checkout main
+git pull origin main
+git merge staging
+git push origin main
+git checkout [original-branch]  # Switch back to original branch
+```
+
 ## Security & Configuration
 - Never commit real API keys. Copy `.env.example` → `.env` (root) and `services/env.example` → `services/.env`, then edit locally.
 - Review `services/config.py` before deploying; override via environment variables in production.
