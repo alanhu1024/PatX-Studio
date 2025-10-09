@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   title: 'Privacy Policy - PatX Studio',
   description: 'Privacy Policy for PatX Studio - AI Patent Claim Charts',
   alternates: {
-    canonical: 'https://patx.ai/privacy',
+    canonical: '/privacy',
   },
 };
 

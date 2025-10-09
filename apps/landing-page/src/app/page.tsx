@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { Metadata } from 'next';
 import { 
   Navbar, 
   HeroSection, 
@@ -23,6 +24,12 @@ import {
   SSOIcon,
   SOCIcon,
 } from "@/components";
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: '/',
+  },
+};
 
 export default function Home() {
   return (

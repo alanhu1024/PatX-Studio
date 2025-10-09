@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   title: 'Security - PatX Studio',
   description: 'Security information for PatX Studio - AI Patent Claim Charts',
   alternates: {
-    canonical: 'https://patx.ai/security',
+    canonical: '/security',
   },
 };
 

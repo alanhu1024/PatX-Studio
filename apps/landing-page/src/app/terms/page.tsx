@@ -1,5 +1,14 @@
 import Link from "next/link";
 import { Navbar, Footer } from "@/components";
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Terms of Service - PatX Studio',
+  description: 'Terms of Service for PatX Studio - AI Patent Claim Charts',
+  alternates: {
+    canonical: '/terms',
+  },
+};
 
 export default function TermsOfService() {
   return (
